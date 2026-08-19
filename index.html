@@ -20,12 +20,6 @@
               500: '#10b981',
               600: '#059669',
               700: '#047857',
-            },
-            indigoCustom: {
-              50: '#eeeefb',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
             }
           }
         }
@@ -42,7 +36,6 @@
   <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
-    /* Custom scrollbar for better visual embedding */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -55,8 +48,8 @@
   <div id="root" class="w-full h-auto min-h-screen"></div>
 
   <script type="text/babel">
-    const { useState, useEffect, useMemo, useRef } = React;
-    const { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } = Recharts;
+    const { useState, useEffect, useMemo } = React;
+    const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } = Recharts;
 
     const Icon = ({ name, className = "w-5 h-5", ...props }) => {
       const icons = {
@@ -116,19 +109,14 @@
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
         ),
-        Award: (
-          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-        ),
         FileText: (
           <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         ),
-        ArrowRight: (
+        User: (
           <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
         )
       };
@@ -158,7 +146,7 @@
       {
         id: 2,
         title: "BLOCO 2 — MEDO DA PROSPERIDADE",
-        shortTitle: "Medo da Prosperidade",
+        shortTitle: "Medo da ProsperIDADE",
         profileName: "PERFIL MEDO DA PROSPERIDADE",
         profileDesc: "Deseja crescer, mas emocionalmente teme o que a prosperidade representa.",
         questions: [
@@ -300,14 +288,33 @@
       }
     ];
 
+    const SCALE_OPTIONS = [
+      { value: 0, label: "0", desc: "Nunca" },
+      { value: 1, label: "1", desc: "Raramente" },
+      { value: 2, label: "2", desc: "Às vezes" },
+      { value: 3, label: "3", desc: "Frequentemente" },
+      { value: 4, label: "4", desc: "Quase sempre" },
+      { value: 5, label: "5", desc: "Sempre" }
+    ];
+
     function App() {
-      // Answers state key: "b1_q0", "b2_q5", etc.
+      // Answers state key: "b0_q0", "b1_q5", etc.
       const [answers, setAnswers] = useState(() => {
         try {
           const saved = localStorage.getItem('mef_diagnostic_answers');
           return saved ? JSON.parse(saved) : {};
         } catch (e) {
           return {};
+        }
+      });
+
+      // User Profile Information State
+      const [userInfo, setUserInfo] = useState(() => {
+        try {
+          const saved = localStorage.getItem('mef_user_info');
+          return saved ? JSON.parse(saved) : { name: '', age: '', profession: '', phone: '', income: '', goal: '' };
+        } catch (e) {
+          return { name: '', age: '', profession: '', phone: '', income: '', goal: '' };
         }
       });
 
@@ -324,17 +331,17 @@
       const [showResetModal, setShowResetModal] = useState(false);
       const [showIncompleteModal, setShowIncompleteModal] = useState(false);
 
-      // Save to localStorage
+      // Save state to localStorage
       useEffect(() => {
         try {
           localStorage.setItem('mef_diagnostic_answers', JSON.stringify(answers));
           localStorage.setItem('mef_diagnostic_submitted', isSubmitted.toString());
+          localStorage.setItem('mef_user_info', JSON.stringify(userInfo));
         } catch (e) {
-          console.error("LocalStorage write failed", e);
+          console.error("LocalStorage write error", e);
         }
-      }, [answers, isSubmitted]);
+      }, [answers, isSubmitted, userInfo]);
 
-      // Calculate total questions answered
       const totalQuestionsCount = 60;
       const answeredCount = useMemo(() => {
         return Object.keys(answers).filter(k => answers[k] !== undefined && answers[k] !== null).length;
@@ -342,13 +349,11 @@
 
       const progressPercent = Math.round((answeredCount / totalQuestionsCount) * 100);
 
-      // Answer selection handler
       const handleScoreChange = (blockIdx, questionIdx, score) => {
         const key = `b${blockIdx}_q${questionIdx}`;
         setAnswers(prev => ({ ...prev, [key]: score }));
       };
 
-      // Calculate Block Totals
       const blockScores = useMemo(() => {
         return MAP_DATA.map((block, bIdx) => {
           let sum = 0;
@@ -373,17 +378,14 @@
         });
       }, [answers]);
 
-      // Overall Score
       const totalScore = useMemo(() => {
         return blockScores.reduce((acc, b) => acc + b.score, 0);
       }, [blockScores]);
 
-      // Tier analysis
       const currentTier = useMemo(() => {
         return SCORE_TIERS.find(t => totalScore >= t.min && totalScore <= t.max) || SCORE_TIERS[0];
       }, [totalScore]);
 
-      // Dominant Profile (Highest Scoring Block)
       const dominantProfile = useMemo(() => {
         let max = -1;
         let dominant = blockScores[0];
@@ -396,22 +398,30 @@
         return dominant;
       }, [blockScores]);
 
-      // Reset Diagnosis - Clears everything completely back to blank state
       const handleConfirmReset = () => {
         setAnswers({});
+        setUserInfo({ name: '', age: '', profession: '', phone: '', income: '', goal: '' });
         setIsSubmitted(false);
         setCurrentBlockIndex(0);
         setShowResetModal(false);
         try {
           localStorage.removeItem('mef_diagnostic_answers');
           localStorage.removeItem('mef_diagnostic_submitted');
+          localStorage.removeItem('mef_user_info');
         } catch (e) {}
         window.scrollTo({ top: 0, behavior: 'smooth' });
       };
 
-      // Copy summary to clipboard
       const handleCopyReport = () => {
         const text = `=== MAPEAMENTO EMOCIONAL FINANCEIRO ===\n` +
+          `-- Dados do Participante --\n` +
+          `Nome: ${userInfo.name || 'Não informado'}\n` +
+          `Idade: ${userInfo.age ? userInfo.age + ' anos' : 'Não informado'}\n` +
+          `Profissão: ${userInfo.profession || 'Não informado'}\n` +
+          `WhatsApp: ${userInfo.phone || 'Não informado'}\n` +
+          `Faixa de Renda: ${userInfo.income || 'Não informado'}\n` +
+          `Maior Desafio: ${userInfo.goal || 'Não informado'}\n\n` +
+          `-- Resultado Geral --\n` +
           `Pontuação Geral: ${totalScore} / 300 PONTOS\n` +
           `Diagnóstico: ${currentTier.title}\n` +
           `Perfil Dominante: ${dominantProfile.profileName} (${dominantProfile.score}/50 pts)\n` +
@@ -430,33 +440,35 @@
         setTimeout(() => setCopyStatus(false), 2500);
       };
 
+      const currentBlock = MAP_DATA[currentBlockIndex];
+
       return (
         <div className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-10 pb-28 sm:pb-16">
           
           {/* Header principal */}
-          <header className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 mb-6">
+          <header className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-slate-200/80 mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-semibold tracking-wide uppercase mb-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-semibold tracking-wide uppercase mb-2">
                   <Icon name="Brain" className="w-4 h-4" />
                   Ferramenta de Autoconhecimento
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                   MAPEAMENTO EMOCIONAL FINANCEIRO
                 </h1>
-                <p className="text-slate-600 text-sm sm:text-base mt-1">
+                <p className="text-slate-600 text-xs sm:text-sm mt-1">
                   Diagnóstico de Padrões Financeiros, Emocionais e Comportamentais
                 </p>
               </div>
 
               <div className="flex items-center gap-3">
                 {!isSubmitted && (
-                  <div className="bg-slate-50 border border-slate-200 p-3 sm:p-4 rounded-xl text-center min-w-[150px]">
-                    <span className="text-xs uppercase font-medium text-slate-500 block">Progresso Geral</span>
-                    <div className="text-xl sm:text-2xl font-black text-indigo-600 mt-0.5">
-                      {answeredCount} <span className="text-sm font-normal text-slate-400">/ 60</span>
+                  <div className="bg-slate-50 border border-slate-200 p-3 sm:p-4 rounded-xl text-center min-w-[140px]">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Progresso Geral</span>
+                    <div className="text-lg sm:text-2xl font-black text-indigo-600 mt-0.5">
+                      {answeredCount} <span className="text-xs font-normal text-slate-400">/ 60</span>
                     </div>
-                    <div className="w-full bg-slate-200 h-2 rounded-full mt-2 overflow-hidden">
+                    <div className="w-full bg-slate-200 h-2 rounded-full mt-1.5 overflow-hidden">
                       <div 
                         className="bg-indigo-600 h-full transition-all duration-300" 
                         style={{ width: `${progressPercent}%` }}
@@ -477,34 +489,113 @@
             </div>
           </header>
 
-          {}
           {!isSubmitted ? (
-            /* ================= VIEW: QUESTIONNÁRIO ================= */
+            /* ================= VIEW: QUESTIONÁRIO ================= */
             <div className="space-y-6">
 
-              {/* Instruções de Escala */}
+              {/* Dados do Participante */}
+              <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm space-y-4">
+                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                    <Icon name="User" className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">Dados do Participante</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">Preencha seus dados para personalizar o relatório final do diagnóstico</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 text-xs">
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">Nome Completo</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: Maria Silva"
+                      value={userInfo.name}
+                      onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-slate-900 font-medium"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">Idade</label>
+                    <input
+                      type="number"
+                      placeholder="Ex: 35"
+                      value={userInfo.age}
+                      onChange={(e) => setUserInfo({ ...userInfo, age: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-slate-900 font-medium"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">Profissão / Atuação</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: Empresário(a), Autônomo(a)"
+                      value={userInfo.profession}
+                      onChange={(e) => setUserInfo({ ...userInfo, profession: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-slate-900 font-medium"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">WhatsApp / Telefone</label>
+                    <input
+                      type="text"
+                      placeholder="(00) 00000-0000"
+                      value={userInfo.phone}
+                      onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-slate-900 font-medium"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">Faixa de Renda Mensal</label>
+                    <select
+                      value={userInfo.income}
+                      onChange={(e) => setUserInfo({ ...userInfo, income: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-slate-900 font-medium"
+                    >
+                      <option value="">Selecione a faixa...</option>
+                      <option value="Até R$ 3.000">Até R$ 3.000</option>
+                      <option value="R$ 3.000 a R$ 7.000">R$ 3.000 a R$ 7.000</option>
+                      <option value="R$ 7.000 a R$ 15.000">R$ 7.000 a R$ 15.000</option>
+                      <option value="R$ 15.000 a R$ 30.000">R$ 15.000 a R$ 30.000</option>
+                      <option value="Acima de R$ 30.000">Acima de R$ 30.000</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">Maior Desafio Atual</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: Previsibilidade, Delegação, etc."
+                      value={userInfo.goal}
+                      onChange={(e) => setUserInfo({ ...userInfo, goal: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-slate-900 font-medium"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Instruções da Escala */}
               <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-sm">
-                <h3 className="text-xs uppercase font-bold text-slate-500 tracking-wider mb-3">
-                  Instrução: Para cada afirmação, selecione uma nota de 0 a 5:
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-xs">
-                  {[
-                    { score: 0, label: "0 = Nunca" },
-                    { score: 1, label: "1 = Raramente" },
-                    { score: 2, label: "2 = Às vezes" },
-                    { score: 3, label: "3 = Frequentemente" },
-                    { score: 4, label: "4 = Quase sempre" },
-                    { score: 5, label: "5 = Sempre" }
-                  ].map(item => (
-                    <div key={item.score} className="p-2 rounded-lg bg-slate-50 border border-slate-100 font-medium text-slate-700">
-                      {item.label}
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
+                  Instrução: Para cada afirmação, marque uma nota de 0 a 5
+                </h4>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-xs">
+                  {SCALE_OPTIONS.map(opt => (
+                    <div key={opt.value} className="bg-slate-50 border border-slate-200/70 rounded-lg p-2 text-center">
+                      <span className="font-extrabold text-indigo-600 block text-sm">{opt.label}</span>
+                      <span className="text-slate-600 font-medium text-[11px]">{opt.desc}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Navegação entre Blocos */}
-              <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-none">
+              {/* Seletor de Blocos (Tabs) */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
                 {MAP_DATA.map((block, idx) => {
                   const bScore = blockScores[idx];
                   const isActive = currentBlockIndex === idx;
@@ -512,74 +603,85 @@
                     <button
                       key={block.id}
                       onClick={() => setCurrentBlockIndex(idx)}
-                      className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-2 border ${
-                        isActive
-                          ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-100 scale-[1.02]"
-                          : bScore.completed
-                          ? "bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100"
-                          : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                      className={`px-3.5 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-2 shrink-0 ${
+                        isActive 
+                          ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm' 
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                       }`}
                     >
-                      <span>Bloco {idx + 1}</span>
-                      {bScore.completed && (
-                        <Icon name="CheckCircle" className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>BLOCO {idx + 1}</span>
+                      {bScore.completed ? (
+                        <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-emerald-300' : 'bg-emerald-500'}`}></span>
+                      ) : (
+                        <span className={`text-[10px] font-normal ${isActive ? 'text-indigo-200' : 'text-slate-400'}`}>
+                          ({bScore.score}/50)
+                        </span>
                       )}
                     </button>
                   );
                 })}
               </div>
 
-              {}
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-8">
+              {/* Bloco Atual */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-7 space-y-6">
                 
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-100 gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-2">
                   <div>
-                    <span className="text-xs font-bold uppercase text-indigo-600 tracking-wider">
-                      Bloco {currentBlockIndex + 1} de 6
+                    <span className="text-xs font-extrabold text-indigo-600 uppercase tracking-wider">
+                      BLOCO {currentBlockIndex + 1} DE 6
                     </span>
                     <h2 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">
-                      {MAP_DATA[currentBlockIndex].title}
+                      {currentBlock.title}
                     </h2>
                   </div>
-
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-medium text-slate-500">
-                      Pontuação deste bloco: <strong className="text-indigo-600 text-sm">{blockScores[currentBlockIndex].score}</strong> / 50
-                    </span>
+                  <div className="bg-indigo-50 border border-indigo-100 px-3 py-1.5 rounded-xl text-xs font-bold text-indigo-700 self-start sm:self-auto">
+                    Subtotal: {blockScores[currentBlockIndex].score} / 50 pts
                   </div>
                 </div>
 
-                {/* Lista de perguntas */}
-                <div className="divide-y divide-slate-100 my-4">
-                  {MAP_DATA[currentBlockIndex].questions.map((qText, qIdx) => {
-                    const currentAnswer = answers[`b${currentBlockIndex}_q${qIdx}`];
+                {/* Lista de Perguntas do Bloco */}
+                <div className="space-y-5">
+                  {currentBlock.questions.map((qText, qIdx) => {
+                    const key = `b${currentBlockIndex}_q${qIdx}`;
+                    const currentVal = answers[key];
+
                     return (
-                      <div key={qIdx} className="py-4 sm:py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/50 px-2 rounded-xl transition-colors">
-                        <div className="flex items-start gap-3 md:max-w-[55%]">
-                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-semibold flex items-center justify-center mt-0.5">
+                      <div 
+                        key={qIdx} 
+                        className={`p-4 rounded-xl border transition-all ${
+                          currentVal !== undefined && currentVal !== null 
+                            ? 'bg-slate-50/60 border-slate-200' 
+                            : 'bg-white border-slate-200/80 shadow-sm'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3 mb-3">
+                          <span className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                             {qIdx + 1}
                           </span>
-                          <p className="text-sm sm:text-base font-medium text-slate-800 leading-snug">
+                          <p className="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed pt-0.5">
                             {qText}
                           </p>
                         </div>
 
-                        {/* Botões de Escala 0 a 5 */}
-                        <div className="flex items-center gap-1.5 sm:gap-2 justify-between sm:justify-start">
-                          {[0, 1, 2, 3, 4, 5].map((val) => {
-                            const isSelected = currentAnswer === val;
+                        {/* Botões de Nota (0 a 5) */}
+                        <div className="grid grid-cols-6 gap-1.5 sm:gap-2 pt-1">
+                          {SCALE_OPTIONS.map((opt) => {
+                            const isSelected = currentVal === opt.value;
                             return (
                               <button
-                                key={val}
+                                key={opt.value}
                                 type="button"
-                                onClick={() => handleScoreChange(currentBlockIndex, qIdx, val)}
-                                className={`flex-1 sm:flex-none w-9 h-10 sm:w-11 sm:h-11 rounded-lg text-xs sm:text-sm font-bold transition-all duration-150 border flex flex-col items-center justify-center active:scale-95 ${
-                                  isSelected
-                                    ? "bg-indigo-600 text-white border-indigo-600 ring-2 ring-indigo-200 shadow-sm"
-                                    : "bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-100"
+                                onClick={() => handleScoreChange(currentBlockIndex, qIdx, opt.value)}
+                                className={`py-2 px-1 rounded-xl text-xs font-extrabold transition-all border flex flex-col items-center justify-center ${
+                                  isSelected 
+                                    ? 'bg-indigo-600 text-white border-indigo-600 ring-2 ring-indigo-200 shadow-sm scale-[1.02]' 
+                                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                                 }`}
                               >
-                                <span>{val}</span>
+                                <span className="text-sm">{opt.value}</span>
+                                <span className={`text-[9px] font-normal truncate max-w-full hidden sm:block ${isSelected ? 'text-indigo-100' : 'text-slate-400'}`}>
+                                  {opt.desc}
+                                </span>
                               </button>
                             );
                           })}
@@ -589,74 +691,54 @@
                   })}
                 </div>
 
-                {/* Ações inferiores de Navegação */}
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100 mt-6">
-                  
+                {/* Botões de Navegação entre Blocos */}
+                <div className="flex items-center justify-between pt-4 border-t border-slate-100 gap-3">
                   <button
-                    type="button"
-                    onClick={() => setCurrentBlockIndex(prev => Math.max(0, prev - 1))}
                     disabled={currentBlockIndex === 0}
-                    className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border transition-all ${
-                      currentBlockIndex === 0
-                        ? "opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400"
-                        : "bg-white border-slate-300 text-slate-700 hover:bg-slate-50"
+                    onClick={() => {
+                      setCurrentBlockIndex(prev => prev - 1);
+                      window.scrollTo({ top: 200, behavior: 'smooth' });
+                    }}
+                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border transition-all ${
+                      currentBlockIndex === 0 
+                        ? 'opacity-40 cursor-not-allowed text-slate-400 border-slate-200' 
+                        : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'
                     }`}
                   >
                     <Icon name="ChevronLeft" className="w-4 h-4" />
                     Bloco Anterior
                   </button>
 
-                  <div className="flex items-center gap-2 w-full sm:w-auto">
-                    {currentBlockIndex < 5 ? (
-                      <button
-                        type="button"
-                        onClick={() => setCurrentBlockIndex(prev => Math.min(5, prev + 1))}
-                        className="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-100 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
-                      >
-                        Próximo Bloco
-                        <Icon name="ChevronRight" className="w-4 h-4" />
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (answeredCount < totalQuestionsCount) {
-                            setShowIncompleteModal(true);
-                          } else {
-                            setIsSubmitted(true);
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                          }
-                        }}
-                        className="w-full sm:w-auto px-8 py-3 rounded-xl text-sm font-extrabold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-100 flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
-                      >
-                        <Icon name="Sparkles" className="w-4 h-4" />
-                        VER DIAGNÓSTICO COMPLETO
-                      </button>
-                    )}
-                  </div>
-
+                  {currentBlockIndex < MAP_DATA.length - 1 ? (
+                    <button
+                      onClick={() => {
+                        setCurrentBlockIndex(prev => prev + 1);
+                        window.scrollTo({ top: 200, behavior: 'smooth' });
+                      }}
+                      className="px-5 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 shadow-md transition-all"
+                    >
+                      Próximo Bloco
+                      <Icon name="ChevronRight" className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        if (answeredCount < totalQuestionsCount) {
+                          setShowIncompleteModal(true);
+                        } else {
+                          setIsSubmitted(true);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }}
+                      className="px-6 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2 shadow-lg transition-all"
+                    >
+                      <Icon name="CheckCircle" className="w-4 h-4" />
+                      Ver Diagnóstico Completo
+                    </button>
+                  )}
                 </div>
 
               </div>
-
-              {/* Botão para Ver Resultado direto se já respondeu grande parte */}
-              {answeredCount >= 10 && (
-                <div className="text-center pt-2">
-                  <button
-                    onClick={() => {
-                      if (answeredCount < totalQuestionsCount) {
-                        setShowIncompleteModal(true);
-                      } else {
-                        setIsSubmitted(true);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }
-                    }}
-                    className="text-xs font-bold text-indigo-600 hover:text-indigo-800 underline decoration-indigo-300 underline-offset-4"
-                  >
-                    Visualizar resultado com {answeredCount} de 60 respostas
-                  </button>
-                </div>
-              )}
 
             </div>
           ) : (
@@ -665,6 +747,22 @@
 
               {/* Banner do Resultado Geral */}
               <div className="bg-white rounded-2xl border border-slate-200/80 shadow-md p-6 sm:p-8 relative overflow-hidden">
+                
+                {/* Resumo dos dados do Participante no Resultado */}
+                {(userInfo.name || userInfo.profession || userInfo.phone) && (
+                  <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200/80 text-xs text-slate-700 flex flex-wrap items-center justify-between gap-2 mb-6">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-bold text-slate-900 text-sm">{userInfo.name || 'Participante'}</span>
+                      {userInfo.age && <span className="bg-slate-200/70 text-slate-700 px-2 py-0.5 rounded font-medium">{userInfo.age} anos</span>}
+                      {userInfo.profession && <span className="bg-slate-200/70 text-slate-700 px-2 py-0.5 rounded font-medium">{userInfo.profession}</span>}
+                      {userInfo.income && <span className="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-medium">{userInfo.income}</span>}
+                    </div>
+                    {userInfo.phone && (
+                      <span className="text-slate-500 font-medium">WhatsApp: {userInfo.phone}</span>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
                   
                   <div className="space-y-3 text-center lg:text-left flex-1">
@@ -708,7 +806,7 @@
                 </div>
               </div>
 
-              {}
+              {/* Análise de Perfil Dominante e Gráfico */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 {/* Card Perfil Dominante */}
@@ -740,7 +838,7 @@
                   </div>
                 </div>
 
-                {/* Gráfico Radar / Barras dos 6 Blocos */}
+                {/* Gráfico de Barras dos 6 Blocos */}
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-sm flex flex-col justify-between">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
@@ -771,7 +869,7 @@
 
               </div>
 
-              {}
+              {/* Detalhamento de cada Bloco */}
               <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 sm:p-8">
                 <h3 className="text-lg font-bold text-slate-900 mb-4 pb-3 border-b border-slate-100 flex items-center gap-2">
                   <Icon name="FileText" className="w-5 h-5 text-indigo-600" />
@@ -834,7 +932,7 @@
                 </div>
               </div>
 
-              {}
+              {/* Conclusão Estratégica */}
               <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-lg space-y-4">
                 <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
                   <Icon name="Sparkles" className="w-4 h-4" />
@@ -882,7 +980,7 @@
             </div>
           )}
 
-          {/* Menu de Navegação do Rodapé (Estilo Mobile App) */}
+          {/* Menu de Navegação no Rodapé (Mobile App Style) */}
           <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-xl px-2 py-2">
             <div className="max-w-md mx-auto grid grid-cols-4 items-center justify-items-center">
               
@@ -940,7 +1038,7 @@
 
           {/* Modal de Confirmação para Refazer Teste */}
           {showResetModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
               <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
                 <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
                   <Icon name="RefreshCw" className="w-6 h-6" />
@@ -948,7 +1046,7 @@
                 <div className="text-center">
                   <h3 className="text-lg font-bold text-slate-900">Refazer Teste em Branco?</h3>
                   <p className="text-slate-600 text-sm mt-1">
-                    Esta ação irá <strong>limpar todas as suas 60 respostas</strong> e reiniciará o diagnóstico do zero.
+                    Esta ação irá <strong>limpar todas as suas 60 respostas</strong> e seus dados cadastrais, reiniciando o diagnóstico do zero.
                   </p>
                 </div>
                 <div className="flex items-center gap-3 pt-2">
