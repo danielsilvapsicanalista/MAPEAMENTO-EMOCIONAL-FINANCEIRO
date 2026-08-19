@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapeamento Emocional Financeiro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+            },
+            indigoCustom: {
+              50: '#eeeefb',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- React & React-DOM UMD -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- PropTypes & Recharts UMD -->
+  <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+  <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    /* Custom scrollbar for better visual embedding */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-full">
+
+  <!-- Container Raiz -->
+  <div id="root" class="w-full h-auto min-h-screen"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo, useRef } = React;
+    const { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } = Recharts;
+
+    const Icon = ({ name, className = "w-5 h-5", ...props }) => {
+      const icons = {
+        Brain: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-4a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        ),
+        ShieldAlert: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01" />
+          </svg>
+        ),
+        Target: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.4 15a8.001 8.001 0 000-6M4.6 9a8.001 8.001 0 000 6" />
+          </svg>
+        ),
+        CheckCircle: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        ),
+        RefreshCw: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        ),
+        ChevronRight: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        ),
+        ChevronLeft: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        ),
+        Sparkles: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+          </svg>
+        ),
+        AlertCircle: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        ),
+        BarChart3: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        ),
+        Copy: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        ),
+        Award: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        ),
+        FileText: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        ),
+        ArrowRight: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        )
+      };
+      return icons[name] || null;
+    };
+
+    const MAP_DATA = [
+      {
+        id: 1,
+        title: "BLOCO 1 — SOBREVIVÊNCIA E CAOS OPERACIONAL",
+        shortTitle: "Sobrevivência e Caos",
+        profileName: "PERFIL SOBREVIVENTE",
+        profileDesc: "Vive em urgência, caos e pressão constante.",
+        questions: [
+          "Resolvo muitas coisas em cima da hora",
+          "Vivo apagando incêndios",
+          "Tenho dificuldade de manter organização constante",
+          "Produzo melhor sob pressão",
+          "Frequentemente esqueço detalhes importantes",
+          "Minha rotina parece sempre acelerada",
+          "Tenho dificuldade de antecipar problemas",
+          "Quando tudo está tranquilo, fico inquieto(a)",
+          "Me atrapalho com horários e compromissos",
+          "Costumo entrar em estresse facilmente"
+        ]
+      },
+      {
+        id: 2,
+        title: "BLOCO 2 — MEDO DA PROSPERIDADE",
+        shortTitle: "Medo da Prosperidade",
+        profileName: "PERFIL MEDO DA PROSPERIDADE",
+        profileDesc: "Deseja crescer, mas emocionalmente teme o que a prosperidade representa.",
+        questions: [
+          "Tenho medo de perder o que conquistei",
+          "Prosperidade me gera ansiedade",
+          "Tenho dificuldade de desfrutar do dinheiro",
+          "Sinto culpa ao pensar em crescer financeiramente",
+          "Tenho medo de mudar muito de vida",
+          "Às vezes sinto que crescer me afastará das pessoas",
+          "Tenho medo de “me tornar outra pessoa” ao prosperar",
+          "Dinheiro frequentemente me traz tensão",
+          "Tenho dificuldade de cobrar meu valor",
+          "Parece que nunca é suficiente"
+        ]
+      },
+      {
+        id: 3,
+        title: "BLOCO 3 — CONTROLE E SOBRECARGA",
+        shortTitle: "Controle e Sobrecarga",
+        profileName: "PERFIL CONTROLADOR / SOBRECARREGADO",
+        profileDesc: "Assume peso excessivo e possui dificuldade de confiar e delegar.",
+        questions: [
+          "Sinto que se eu não controlar tudo, as coisas desmoronam",
+          "Tenho dificuldade de delegar",
+          "Assumo responsabilidades excessivas",
+          "Frequentemente fico sobrecarregado(a)",
+          "Tenho dificuldade de confiar plenamente nos outros",
+          "Tento resolver problemas sozinho(a)",
+          "Tenho dificuldade de descansar",
+          "Sinto culpa quando paro",
+          "Carrego emocionalmente muitas pessoas",
+          "Sinto que tudo depende de mim"
+        ]
+      },
+      {
+        id: 4,
+        title: "BLOCO 4 — PERTENCIMENTO E IDENTIDADE",
+        shortTitle: "Pertencimento e Identidade",
+        profileName: "PERFIL PERTENCIMENTO E IDENTIDADE",
+        profileDesc: "Existe apego emocional às origens, medo de mudança e dificuldade de sustentar nova identidade.",
+        questions: [
+          "Tenho dificuldade de me imaginar vivendo uma realidade melhor",
+          "Sinto culpa por crescer mais que pessoas próximas",
+          "Tenho medo de parecer arrogante ao prosperar",
+          "Sinto forte apego ao ambiente onde cresci",
+          "Tenho medo de abandonar minhas origens",
+          "Volto facilmente a padrões antigos",
+          "Tenho medo de não pertencer em ambientes melhores",
+          "Tenho dificuldade de sustentar mudanças positivas",
+          "Sinto que preciso continuar sendo quem sempre fui",
+          "Prosperar parece distante da minha realidade"
+        ]
+      },
+      {
+        id: 5,
+        title: "BLOCO 5 — AUTOSSABOTAGEM E EXPANSÃO",
+        shortTitle: "Autossabotagem e Expansão",
+        profileName: "PERFIL AUTOSSABOTADOR",
+        profileDesc: "O crescimento é interrompido por padrões inconscientes de bloqueio e regressão.",
+        questions: [
+          "Quando estou perto de crescer, algo dá errado",
+          "Adio decisões importantes",
+          "Tenho dificuldade de manter estabilidade financeira",
+          "Já perdi oportunidades por desorganização",
+          "Tenho medo de assumir posições maiores",
+          "Crio distrações em momentos decisivos",
+          "Parece que eu mesmo atrapalho meu crescimento",
+          "Tenho dificuldade de sustentar bons resultados",
+          "Frequentemente começo e não termino projetos",
+          "Sinto que mereço menos do que desejo"
+        ]
+      },
+      {
+        id: 6,
+        title: "BLOCO 6 — RELAÇÃO COM AUTORIDADE E AUTONOMIA",
+        shortTitle: "Autoridade e Autonomia",
+        profileName: "PERFIL ALIENAÇÃO À AUTORIDADE",
+        profileDesc: "Existem marcas emocionais ligadas a controle familiar, aprovação e dificuldade de autonomia emocional.",
+        questions: [
+          "Cresci em ambiente controlador",
+          "Tenho dificuldade de tomar decisões sozinho(a)",
+          "Sinto necessidade de aprovação",
+          "Tenho medo de errar",
+          "Já senti que não podia conduzir minha própria vida",
+          "Tive familiares que interferiam excessivamente nas minhas escolhas",
+          "Tenho dificuldade de confiar totalmente em mim",
+          "Sinto necessidade constante de provar valor",
+          "Tenho medo de decepcionar pessoas importantes",
+          "Às vezes sinto que ainda vivo preso(a) emocionalmente à minha família"
+        ]
+      }
+    ];
+
+    const SCORE_TIERS = [
+      {
+        min: 0,
+        max: 50,
+        title: "NÍVEL BAIXO DE BLOQUEIO",
+        badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        barColor: "#10b981",
+        description: "Você apresenta poucos sinais de travas emocionais profundas ligadas à prosperidade. Os desafios podem estar mais ligados a estratégia, disciplina ou direção prática.",
+        action: "Foque em aprimorar processos práticos de gestão financeira e planejamento de metas claras."
+      },
+      {
+        min: 51,
+        max: 100,
+        title: "NÍVEL MODERADO DE BLOQUEIO",
+        badgeColor: "bg-blue-100 text-blue-800 border-blue-200",
+        barColor: "#3b82f6",
+        description: "Existem padrões emocionais que começam a impactar sua organização, crescimento e estabilidade financeira. Algumas crenças e comportamentos já interferem diretamente na prosperidade.",
+        action: "Identifique os gatilhos emocionais específicos dos seus blocos mais elevados para evitar estagnação."
+      },
+      {
+        min: 101,
+        max: 180,
+        title: "NÍVEL ELEVADO DE BLOQUEIO",
+        badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
+        barColor: "#f59e0b",
+        description: "Você apresenta conflitos emocionais importantes relacionados a dinheiro, crescimento, identidade e organização da vida. O emocional já interfere diretamente nas decisões, rotina e expansão profissional.",
+        action: "Trabalhe ativamente na reestruturação de crenças e adote ferramentas formais de gestão para conter o desgaste."
+      },
+      {
+        min: 181,
+        max: 240,
+        title: "NÍVEL INTENSO DE AUTOSSABOTAGEM",
+        badgeColor: "bg-orange-100 text-orange-800 border-orange-200",
+        barColor: "#f97316",
+        description: "Sua vida financeira e profissional provavelmente está sendo fortemente impactada por mecanismos inconscientes de sobrevivência, medo, controle, culpa ou pertencimento emocional.",
+        action: "Priorize desacelerar e revisar acordos emocionais implícitos com sua história familiar e pessoal."
+      },
+      {
+        min: 241,
+        max: 300,
+        title: "NÍVEL CRÍTICO DE APRISIONAMENTO EMOCIONAL",
+        badgeColor: "bg-rose-100 text-rose-800 border-rose-200",
+        barColor: "#ef4444",
+        description: "O emocional está comandando grande parte das suas decisões financeiras, profissionais e organizacionais. Há fortes sinais de bloqueios inconscientes relacionados à prosperidade, autonomia, identidade e sustentação do crescimento.",
+        action: "É fundamental um acompanhamento estruturado para desfazer nós emocionais e reprogramar sua conduta diária."
+      }
+    ];
+
+    function App() {
+      // Answers state key: "b1_q0", "b2_q5", etc.
+      const [answers, setAnswers] = useState(() => {
+        try {
+          const saved = localStorage.getItem('mef_diagnostic_answers');
+          return saved ? JSON.parse(saved) : {};
+        } catch (e) {
+          return {};
+        }
+      });
+
+      const [currentBlockIndex, setCurrentBlockIndex] = useState(0);
+      const [isSubmitted, setIsSubmitted] = useState(() => {
+        try {
+          return localStorage.getItem('mef_diagnostic_submitted') === 'true';
+        } catch (e) {
+          return false;
+        }
+      });
+
+      const [copyStatus, setCopyStatus] = useState(false);
+      const [showResetModal, setShowResetModal] = useState(false);
+      const [showIncompleteModal, setShowIncompleteModal] = useState(false);
+
+      // Save to localStorage
+      useEffect(() => {
+        try {
+          localStorage.setItem('mef_diagnostic_answers', JSON.stringify(answers));
+          localStorage.setItem('mef_diagnostic_submitted', isSubmitted.toString());
+        } catch (e) {
+          console.error("LocalStorage write failed", e);
+        }
+      }, [answers, isSubmitted]);
+
+      // Calculate total questions answered
+      const totalQuestionsCount = 60;
+      const answeredCount = useMemo(() => {
+        return Object.keys(answers).filter(k => answers[k] !== undefined && answers[k] !== null).length;
+      }, [answers]);
+
+      const progressPercent = Math.round((answeredCount / totalQuestionsCount) * 100);
+
+      // Answer selection handler
+      const handleScoreChange = (blockIdx, questionIdx, score) => {
+        const key = `b${blockIdx}_q${questionIdx}`;
+        setAnswers(prev => ({ ...prev, [key]: score }));
+      };
+
+      // Calculate Block Totals
+      const blockScores = useMemo(() => {
+        return MAP_DATA.map((block, bIdx) => {
+          let sum = 0;
+          let count = 0;
+          block.questions.forEach((_, qIdx) => {
+            const val = answers[`b${bIdx}_q${qIdx}`];
+            if (val !== undefined && val !== null) {
+              sum += Number(val);
+              count++;
+            }
+          });
+          return {
+            blockIndex: bIdx,
+            title: block.title,
+            shortTitle: block.shortTitle,
+            profileName: block.profileName,
+            profileDesc: block.profileDesc,
+            score: sum,
+            maxScore: 50,
+            completed: count === 10
+          };
+        });
+      }, [answers]);
+
+      // Overall Score
+      const totalScore = useMemo(() => {
+        return blockScores.reduce((acc, b) => acc + b.score, 0);
+      }, [blockScores]);
+
+      // Tier analysis
+      const currentTier = useMemo(() => {
+        return SCORE_TIERS.find(t => totalScore >= t.min && totalScore <= t.max) || SCORE_TIERS[0];
+      }, [totalScore]);
+
+      // Dominant Profile (Highest Scoring Block)
+      const dominantProfile = useMemo(() => {
+        let max = -1;
+        let dominant = blockScores[0];
+        blockScores.forEach(b => {
+          if (b.score > max) {
+            max = b.score;
+            dominant = b;
+          }
+        });
+        return dominant;
+      }, [blockScores]);
+
+      // Reset Diagnosis - Clears everything completely back to blank state
+      const handleConfirmReset = () => {
+        setAnswers({});
+        setIsSubmitted(false);
+        setCurrentBlockIndex(0);
+        setShowResetModal(false);
+        try {
+          localStorage.removeItem('mef_diagnostic_answers');
+          localStorage.removeItem('mef_diagnostic_submitted');
+        } catch (e) {}
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      // Copy summary to clipboard
+      const handleCopyReport = () => {
+        const text = `=== MAPEAMENTO EMOCIONAL FINANCEIRO ===\n` +
+          `Pontuação Geral: ${totalScore} / 300 PONTOS\n` +
+          `Diagnóstico: ${currentTier.title}\n` +
+          `Perfil Dominante: ${dominantProfile.profileName} (${dominantProfile.score}/50 pts)\n` +
+          `\n-- Detalhamento por Bloco --\n` +
+          blockScores.map(b => `${b.shortTitle}: ${b.score}/50 pts`).join('\n') +
+          `\n\n${currentTier.description}`;
+
+        const el = document.createElement('textarea');
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+
+        setCopyStatus(true);
+        setTimeout(() => setCopyStatus(false), 2500);
+      };
+
+      return (
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-10 pb-28 sm:pb-16">
+          
+          {/* Header principal */}
+          <header className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-semibold tracking-wide uppercase mb-3">
+                  <Icon name="Brain" className="w-4 h-4" />
+                  Ferramenta de Autoconhecimento
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  MAPEAMENTO EMOCIONAL FINANCEIRO
+                </h1>
+                <p className="text-slate-600 text-sm sm:text-base mt-1">
+                  Diagnóstico de Padrões Financeiros, Emocionais e Comportamentais
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {!isSubmitted && (
+                  <div className="bg-slate-50 border border-slate-200 p-3 sm:p-4 rounded-xl text-center min-w-[150px]">
+                    <span className="text-xs uppercase font-medium text-slate-500 block">Progresso Geral</span>
+                    <div className="text-xl sm:text-2xl font-black text-indigo-600 mt-0.5">
+                      {answeredCount} <span className="text-sm font-normal text-slate-400">/ 60</span>
+                    </div>
+                    <div className="w-full bg-slate-200 h-2 rounded-full mt-2 overflow-hidden">
+                      <div 
+                        className="bg-indigo-600 h-full transition-all duration-300" 
+                        style={{ width: `${progressPercent}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <button
+                  onClick={() => setShowResetModal(true)}
+                  className="px-3 py-2.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-1.5 transition-all"
+                  title="Limpar tudo e refazer o teste"
+                >
+                  <Icon name="RefreshCw" className="w-4 h-4" />
+                  <span className="hidden sm:inline">Refazer Teste</span>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {}
+          {!isSubmitted ? (
+            /* ================= VIEW: QUESTIONNÁRIO ================= */
+            <div className="space-y-6">
+
+              {/* Instruções de Escala */}
+              <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-sm">
+                <h3 className="text-xs uppercase font-bold text-slate-500 tracking-wider mb-3">
+                  Instrução: Para cada afirmação, selecione uma nota de 0 a 5:
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-xs">
+                  {[
+                    { score: 0, label: "0 = Nunca" },
+                    { score: 1, label: "1 = Raramente" },
+                    { score: 2, label: "2 = Às vezes" },
+                    { score: 3, label: "3 = Frequentemente" },
+                    { score: 4, label: "4 = Quase sempre" },
+                    { score: 5, label: "5 = Sempre" }
+                  ].map(item => (
+                    <div key={item.score} className="p-2 rounded-lg bg-slate-50 border border-slate-100 font-medium text-slate-700">
+                      {item.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Navegação entre Blocos */}
+              <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-none">
+                {MAP_DATA.map((block, idx) => {
+                  const bScore = blockScores[idx];
+                  const isActive = currentBlockIndex === idx;
+                  return (
+                    <button
+                      key={block.id}
+                      onClick={() => setCurrentBlockIndex(idx)}
+                      className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-2 border ${
+                        isActive
+                          ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-100 scale-[1.02]"
+                          : bScore.completed
+                          ? "bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100"
+                          : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                      }`}
+                    >
+                      <span>Bloco {idx + 1}</span>
+                      {bScore.completed && (
+                        <Icon name="CheckCircle" className="w-3.5 h-3.5 text-emerald-600" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {}
+              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-8">
+                
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-100 gap-3">
+                  <div>
+                    <span className="text-xs font-bold uppercase text-indigo-600 tracking-wider">
+                      Bloco {currentBlockIndex + 1} de 6
+                    </span>
+                    <h2 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">
+                      {MAP_DATA[currentBlockIndex].title}
+                    </h2>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-medium text-slate-500">
+                      Pontuação deste bloco: <strong className="text-indigo-600 text-sm">{blockScores[currentBlockIndex].score}</strong> / 50
+                    </span>
+                  </div>
+                </div>
+
+                {/* Lista de perguntas */}
+                <div className="divide-y divide-slate-100 my-4">
+                  {MAP_DATA[currentBlockIndex].questions.map((qText, qIdx) => {
+                    const currentAnswer = answers[`b${currentBlockIndex}_q${qIdx}`];
+                    return (
+                      <div key={qIdx} className="py-4 sm:py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/50 px-2 rounded-xl transition-colors">
+                        <div className="flex items-start gap-3 md:max-w-[55%]">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-semibold flex items-center justify-center mt-0.5">
+                            {qIdx + 1}
+                          </span>
+                          <p className="text-sm sm:text-base font-medium text-slate-800 leading-snug">
+                            {qText}
+                          </p>
+                        </div>
+
+                        {/* Botões de Escala 0 a 5 */}
+                        <div className="flex items-center gap-1.5 sm:gap-2 justify-between sm:justify-start">
+                          {[0, 1, 2, 3, 4, 5].map((val) => {
+                            const isSelected = currentAnswer === val;
+                            return (
+                              <button
+                                key={val}
+                                type="button"
+                                onClick={() => handleScoreChange(currentBlockIndex, qIdx, val)}
+                                className={`flex-1 sm:flex-none w-9 h-10 sm:w-11 sm:h-11 rounded-lg text-xs sm:text-sm font-bold transition-all duration-150 border flex flex-col items-center justify-center active:scale-95 ${
+                                  isSelected
+                                    ? "bg-indigo-600 text-white border-indigo-600 ring-2 ring-indigo-200 shadow-sm"
+                                    : "bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-100"
+                                }`}
+                              >
+                                <span>{val}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Ações inferiores de Navegação */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100 mt-6">
+                  
+                  <button
+                    type="button"
+                    onClick={() => setCurrentBlockIndex(prev => Math.max(0, prev - 1))}
+                    disabled={currentBlockIndex === 0}
+                    className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border transition-all ${
+                      currentBlockIndex === 0
+                        ? "opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400"
+                        : "bg-white border-slate-300 text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    <Icon name="ChevronLeft" className="w-4 h-4" />
+                    Bloco Anterior
+                  </button>
+
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                    {currentBlockIndex < 5 ? (
+                      <button
+                        type="button"
+                        onClick={() => setCurrentBlockIndex(prev => Math.min(5, prev + 1))}
+                        className="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-100 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+                      >
+                        Próximo Bloco
+                        <Icon name="ChevronRight" className="w-4 h-4" />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (answeredCount < totalQuestionsCount) {
+                            setShowIncompleteModal(true);
+                          } else {
+                            setIsSubmitted(true);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }
+                        }}
+                        className="w-full sm:w-auto px-8 py-3 rounded-xl text-sm font-extrabold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-100 flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                      >
+                        <Icon name="Sparkles" className="w-4 h-4" />
+                        VER DIAGNÓSTICO COMPLETO
+                      </button>
+                    )}
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Botão para Ver Resultado direto se já respondeu grande parte */}
+              {answeredCount >= 10 && (
+                <div className="text-center pt-2">
+                  <button
+                    onClick={() => {
+                      if (answeredCount < totalQuestionsCount) {
+                        setShowIncompleteModal(true);
+                      } else {
+                        setIsSubmitted(true);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                    className="text-xs font-bold text-indigo-600 hover:text-indigo-800 underline decoration-indigo-300 underline-offset-4"
+                  >
+                    Visualizar resultado com {answeredCount} de 60 respostas
+                  </button>
+                </div>
+              )}
+
+            </div>
+          ) : (
+            /* ================= VIEW: RESULTADO FINAL ================= */
+            <div className="space-y-6">
+
+              {/* Banner do Resultado Geral */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-md p-6 sm:p-8 relative overflow-hidden">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+                  
+                  <div className="space-y-3 text-center lg:text-left flex-1">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wider">
+                      <Icon name="CheckCircle" className="w-4 h-4" />
+                      Diagnóstico Concluído
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                      Pontuação Geral: <span className="text-indigo-600">{totalScore}</span> / 300 PONTOS
+                    </h2>
+                    
+                    <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1">
+                      <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase border ${currentTier.badgeColor}`}>
+                        {currentTier.title}
+                      </span>
+                    </div>
+
+                    <p className="text-slate-600 text-sm sm:text-base leading-relaxed pt-2">
+                      {currentTier.description}
+                    </p>
+                  </div>
+
+                  {/* Meter Card */}
+                  <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 text-center min-w-[240px] w-full lg:w-auto">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Nível de Bloqueio</span>
+                    <div className="text-4xl font-black text-slate-900 my-2">
+                      {Math.round((totalScore / 300) * 100)}%
+                    </div>
+                    <p className="text-xs text-slate-500 mb-3">Intensidade Emocional</p>
+                    <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{ 
+                          width: `${(totalScore / 300) * 100}%`,
+                          backgroundColor: currentTier.barColor
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* Card Perfil Dominante */}
+                <div className="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-2">
+                      <Icon name="Target" className="w-4 h-4" />
+                      Análise de Perfil Dominante
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white mb-2">
+                      {dominantProfile.profileName}
+                    </h3>
+                    <p className="text-indigo-100/90 text-sm leading-relaxed mb-4">
+                      "{dominantProfile.profileDesc}"
+                    </p>
+                    <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10 text-xs space-y-1.5">
+                      <div className="flex justify-between text-indigo-200">
+                        <span>Score no Bloco Dominante:</span>
+                        <strong className="text-white text-sm">{dominantProfile.score} / 50 pts</strong>
+                      </div>
+                      <div className="w-full bg-white/20 h-1.5 rounded-full overflow-hidden mt-2">
+                        <div className="bg-emerald-400 h-full rounded-full" style={{ width: `${(dominantProfile.score / 50) * 100}%` }}></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-white/10 text-xs text-indigo-200/80">
+                    💡 <strong>Orientação de Ação:</strong> {currentTier.action}
+                  </div>
+                </div>
+
+                {/* Gráfico Radar / Barras dos 6 Blocos */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-sm flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                      <Icon name="BarChart3" className="w-4 h-4 text-indigo-600" />
+                      Visão Geral dos 6 Blocos
+                    </h3>
+                    <span className="text-xs text-slate-400">0 - 50 Pts</span>
+                  </div>
+
+                  <div className="h-64 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={blockScores} layout="vertical" margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+                        <XAxis type="number" domain={[0, 50]} hide />
+                        <YAxis type="category" dataKey="shortTitle" width={110} tick={{ fontSize: 10, fill: '#475569' }} />
+                        <Tooltip 
+                          formatter={(value) => [`${value} / 50 pts`, 'Pontuação']}
+                          contentStyle={{ backgroundColor: '#0f172a', borderRadius: '8px', color: '#fff', fontSize: '12px' }}
+                        />
+                        <Bar dataKey="score" radius={[0, 6, 6, 0]}>
+                          {blockScores.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.score >= 35 ? '#ef4444' : entry.score >= 20 ? '#f59e0b' : '#10b981'} />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+              </div>
+
+              {}
+              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 sm:p-8">
+                <h3 className="text-lg font-bold text-slate-900 mb-4 pb-3 border-b border-slate-100 flex items-center gap-2">
+                  <Icon name="FileText" className="w-5 h-5 text-indigo-600" />
+                  Detalhamento por Bloco Avaliado
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {blockScores.map((b, idx) => {
+                    const pct = Math.round((b.score / 50) * 100);
+                    const isDominant = b.blockIndex === dominantProfile.blockIndex;
+                    
+                    let levelLabel = "Baixo";
+                    let badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
+                    if (b.score >= 35) {
+                      levelLabel = "Crítico / Elevado";
+                      badgeClass = "bg-rose-50 text-rose-700 border-rose-200";
+                    } else if (b.score >= 20) {
+                      levelLabel = "Moderado";
+                      badgeClass = "bg-amber-50 text-amber-700 border-amber-200";
+                    }
+
+                    return (
+                      <div 
+                        key={idx} 
+                        className={`p-4 rounded-xl border transition-all ${
+                          isDominant 
+                            ? "bg-indigo-50/40 border-indigo-300 ring-1 ring-indigo-200" 
+                            : "bg-slate-50/50 border-slate-200/80"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-extrabold text-slate-400">
+                            BLOCO {idx + 1}
+                          </span>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${badgeClass}`}>
+                            {levelLabel}
+                          </span>
+                        </div>
+
+                        <h4 className="text-sm font-bold text-slate-900 line-clamp-1 mb-1">
+                          {b.shortTitle}
+                        </h4>
+
+                        <div className="flex items-baseline justify-between text-xs text-slate-600 mt-2 mb-1">
+                          <span>Pontuação:</span>
+                          <strong className="text-slate-900 text-sm">{b.score} <span className="text-xs font-normal text-slate-400">/ 50</span></strong>
+                        </div>
+
+                        <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full rounded-full ${
+                              b.score >= 35 ? "bg-rose-500" : b.score >= 20 ? "bg-amber-500" : "bg-emerald-500"
+                            }`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {}
+              <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-lg space-y-4">
+                <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
+                  <Icon name="Sparkles" className="w-4 h-4" />
+                  Conclusão Estratégica do Diagnóstico
+                </div>
+                <h3 className="text-xl font-bold">O Diagnóstico Não Avalia Apenas Finanças</h3>
+                <p className="text-slate-300 text-sm leading-relaxed">
+                  Ele identifica padrões emocionais, bloqueios inconscientes, mecanismos de sobrevivência, conflitos com a prosperidade, dificuldades de sustentação do crescimento e padrões de autossabotagem emocional.
+                </p>
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 font-medium leading-relaxed">
+                  🎯 <strong>Objetivo Principal:</strong> Não é apenas ganhar dinheiro, mas sim desenvolver maturidade emocional para sustentar prosperidade, estabilidade e expansão saudável no longo prazo.
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/10">
+                  <button
+                    onClick={handleCopyReport}
+                    className="w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center gap-2 transition-all shadow-md"
+                  >
+                    <Icon name="Copy" className="w-4 h-4" />
+                    {copyStatus ? "Relatório Copiado para a Área de Transferência!" : "Copiar Resumo do Diagnóstico"}
+                  </button>
+
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <button
+                      onClick={() => {
+                        setIsSubmitted(false);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="w-full sm:w-auto px-5 py-3 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-2 transition-all"
+                    >
+                      Revisar Respostas
+                    </button>
+
+                    <button
+                      onClick={() => setShowResetModal(true)}
+                      className="w-full sm:w-auto px-5 py-3 rounded-xl text-xs font-bold bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center justify-center gap-2 transition-all"
+                    >
+                      <Icon name="RefreshCw" className="w-4 h-4" />
+                      Refazer Teste
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* Menu de Navegação do Rodapé (Estilo Mobile App) */}
+          <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-xl px-2 py-2">
+            <div className="max-w-md mx-auto grid grid-cols-4 items-center justify-items-center">
+              
+              <button
+                onClick={() => {
+                  setIsSubmitted(false);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className={`w-full flex flex-col items-center justify-center py-1 rounded-xl transition-all ${
+                  !isSubmitted ? 'text-indigo-600 font-bold' : 'text-slate-500 hover:text-slate-900'
+                }`}
+              >
+                <Icon name="Brain" className="w-5 h-5 mb-0.5" />
+                <span className="text-[11px]">Teste</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  if (answeredCount === 0) {
+                    setShowIncompleteModal(true);
+                  } else {
+                    setIsSubmitted(true);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
+                className={`w-full flex flex-col items-center justify-center py-1 rounded-xl transition-all relative ${
+                  isSubmitted ? 'text-indigo-600 font-bold' : 'text-slate-500 hover:text-slate-900'
+                }`}
+              >
+                <Icon name="BarChart3" className="w-5 h-5 mb-0.5" />
+                <span className="text-[11px]">Resultado</span>
+                {answeredCount > 0 && !isSubmitted && (
+                  <span className="absolute top-1 right-3 w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
+                )}
+              </button>
+
+              <button
+                onClick={handleCopyReport}
+                className="w-full flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 hover:text-slate-900 transition-all"
+              >
+                <Icon name="Copy" className="w-5 h-5 mb-0.5" />
+                <span className="text-[11px]">{copyStatus ? 'Copiado!' : 'Copiar'}</span>
+              </button>
+
+              <button
+                onClick={() => setShowResetModal(true)}
+                className="w-full flex flex-col items-center justify-center py-1 rounded-xl text-rose-600 hover:text-rose-700 transition-all"
+              >
+                <Icon name="RefreshCw" className="w-5 h-5 mb-0.5" />
+                <span className="text-[11px] font-medium">Refazer</span>
+              </button>
+
+            </div>
+          </nav>
+
+          {/* Modal de Confirmação para Refazer Teste */}
+          {showResetModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in">
+              <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+                <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+                  <Icon name="RefreshCw" className="w-6 h-6" />
+                </div>
+                <div className="text-center">
+                  <h3 className="text-lg font-bold text-slate-900">Refazer Teste em Branco?</h3>
+                  <p className="text-slate-600 text-sm mt-1">
+                    Esta ação irá <strong>limpar todas as suas 60 respostas</strong> e reiniciará o diagnóstico do zero.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowResetModal(false)}
+                    className="flex-1 py-2.5 px-4 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleConfirmReset}
+                    className="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors shadow-md shadow-rose-200"
+                  >
+                    Sim, Limpar Tudo
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Modal para Diagnóstico Incompleto */}
+          {showIncompleteModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+              <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+                <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto">
+                  <Icon name="AlertCircle" className="w-6 h-6" />
+                </div>
+                <div className="text-center">
+                  <h3 className="text-lg font-bold text-slate-900">Visualizar Diagnóstico Parcial?</h3>
+                  <p className="text-slate-600 text-sm mt-1">
+                    Você preencheu <strong>{answeredCount} de 60 questões</strong>. Para um mapeamento 100% preciso, recomendamos responder todos os blocos.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowIncompleteModal(false);
+                      setIsSubmitted(true);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-colors shadow-md shadow-indigo-100"
+                  >
+                    Ver Diagnóstico Parcial
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowIncompleteModal(false)}
+                    className="w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors"
+                  >
+                    Continuar Respondendo
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Footer discreto */}
+          <footer className="mt-10 text-center text-xs text-slate-400 py-4">
+            Mapeamento Emocional Financeiro • Sistema de Diagnóstico de Padrões Emocionais e Comportamentais
+          </footer>
+
+        </div>
+      );
+    }
+
+    const rootElement = document.getElementById('root');
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<App />);
+  </script>
+</body>
+</html>
