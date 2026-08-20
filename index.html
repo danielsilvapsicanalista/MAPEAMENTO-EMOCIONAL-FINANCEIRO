@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapeamento Emocional Financeiro — Diagnóstico Avançado</title>
+  <title>Mapeamento Emocional Financeiro — Descubra o que Trava suas Finanças</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
   <script>
@@ -58,6 +58,11 @@
         Brain: (
           <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-4a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        ),
+        Tree: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V6m0 0l-4 4m4-4l4 4M5 19h14M8 13h8" />
           </svg>
         ),
         ShieldAlert: (
@@ -135,6 +140,11 @@
           <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 9m7 1h-2m-2-3L5.482 9.482A2 2 0 004 11.236V18a2 2 0 002 2h2m0 0l2.5 1" />
           </svg>
+        ),
+        Hammer: (
+          <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.9 6.91a2.12 2.12 0 01-3-3l6.91-6.9a6 6 0 017.94-7.94l-3.76 3.76z" />
+          </svg>
         )
       };
       return icons[name] || null;
@@ -143,122 +153,128 @@
     const MAP_DATA = [
       {
         id: 1,
-        title: "BLOCO 1 — SOBREVIVÊNCIA E CAOS OPERACIONAL",
-        shortTitle: "Sobrevivência e Caos",
-        profileName: "PERFIL SOBREVIVENTE",
-        profileDesc: "Vive em urgência, caos e pressão constante.",
-        psychologicalCore: "Tomar decisões financeiras buscando prioritariamente proteção imediata e alívio do estresse diário.",
+        title: "BLOCO 1 — CORRERIA E APAGAR INCÊNDIOS",
+        shortTitle: "Correria e Urgência",
+        profileName: "PERFIL SEMPRE APAGANDO INCÊNDIOS",
+        profileDesc: "Você vive resolvendo imprevistos de última hora e sente que falta rotina e tranquilidade.",
+        psychologicalCore: "Tomar decisões no impulso ou na pressa para tentar resolver a pressão de hoje, sem conseguir planejar o amanhã.",
+        marbleLayer: "Hábitos de pressa e desorganização que impedem de ter uma rotina financeira em paz.",
         questions: [
           "Resolvo muitas coisas em cima da hora",
-          "Vivo apagando incêndios",
-          "Tenho dificuldade de manter organização constante",
-          "Produzo melhor sob pressão",
-          "Frequentemente esqueço detalhes importantes",
-          "Minha rotina parece sempre acelerada",
-          "Tenho dificuldade de antecipar problemas",
-          "Quando tudo está tranquilo, fico inquieto(a)",
-          "Me atrapalho com horários e compromissos",
-          "Costumo entrar em estresse facilmente"
+          "Sinto que vivo apagando incêndios no dia a dia",
+          "Tenho dificuldade de manter uma rotina organizada",
+          "Só consigo render bem quando estou sob pressão",
+          "Frequentemente esqueço compromissos ou contas importantes",
+          "Minha rotina parece sempre corrida e agitada",
+          "Tenho dificuldade de prever e se antecipar a problemas",
+          "Quando tudo está calmo, chego a estranhar ou me sentir incomodado(a)",
+          "Me atrapalho com prazos, contas e horários",
+          "Entro em estresse por causa de dinheiro com facilidade"
         ]
       },
       {
         id: 2,
-        title: "BLOCO 2 — MEDO DA PROSPERIDADE",
-        shortTitle: "Medo da Prosperidade",
-        profileName: "PERFIL MEDO DA PROSPERIDADE",
-        profileDesc: "Deseja crescer, mas emocionalmente teme o que a prosperidade representa.",
-        psychologicalCore: "Associação inconsciente entre ter mais dinheiro e ter mais conflitos, perda de relacionamentos, culpa ou exposição.",
+        title: "BLOCO 2 — RECEIO DE CRESCER E TER SUCESSO",
+        shortTitle: "Receio de Prosperar",
+        profileName: "PERFIL COM MEDO DE CRESCER",
+        profileDesc: "Você deseja melhorar de vida, mas sente ansiedade ou preocupação quando o dinheiro aumenta.",
+        psychologicalCore: "Pensar que ter mais dinheiro vai trazer mais inveja, conflitos na família, perda de paz ou medo de perder tudo.",
+        marbleLayer: "Preocupações guardadas de que ter mais dinheiro trará cobranças ou afaste pessoas queridas.",
         questions: [
-          "Tenho medo de perder o que conquistei",
-          "Prosperidade me gera ansiedade",
-          "Tenho dificuldade de desfrutar do dinheiro",
-          "Sinto culpa ao pensar em crescer financeiramente",
-          "Tenho medo de mudar muito de vida",
-          "Às vezes sinto que crescer me afastará das pessoas",
-          "Tenho medo de “me tornar outra pessoa” ao prosperar",
-          "Dinheiro frequentemente me traz tensão",
-          "Tenho dificuldade de cobrar meu valor",
-          "Parece que nunca é suficiente"
+          "Tenho medo de perder tudo o que conquistei",
+          "A ideia de ter muito dinheiro me traz ansiedade ou preocupação",
+          "Tenho dificuldade de desfrutar e aproveitar o dinheiro com paz",
+          "Sinto uma culpa velada quando penso em ganhar mais que os outros",
+          "Tenho medo de que meu estilo de vida mude demais",
+          "Sinto receio de que crescer financeiramente me afaste de pessoas queridas",
+          "Tenho medo de mudar e deixar de ser quem eu sou se eu prosperar",
+          "Pensar no meu futuro financeiro me traz tensão no corpo",
+          "Tenho dificuldade de cobrar pelo meu trabalho ou pedir aumento",
+          "Parece que, por mais que eu ganhe, nunca é suficiente"
         ]
       },
       {
         id: 3,
-        title: "BLOCO 3 — CONTROLE E SOBRECARGA",
-        shortTitle: "Controle e Sobrecarga",
-        profileName: "PERFIL CONTROLADOR / SOBRECARREGADO",
-        profileDesc: "Assume peso excessivo e possui dificuldade de confiar e delegar.",
-        psychologicalCore: "Acreditar que a única garantia de segurança é ter tudo sob gestão pessoal direta, o que gera exaustão e paralisia.",
+        title: "BLOCO 3 — SOBRECARGA E CARREGAR TUDO NAS COSTAS",
+        shortTitle: "Carregar Tudo Nas Costas",
+        profileName: "PERFIL CENTRALIZADOR E EXAUSTO",
+        profileDesc: "Você sente que precisa resolver tudo sozinho(a) e tem grande dificuldade de pedir ajuda.",
+        psychologicalCore: "Acreditar que só sai bem feito se você mesmo fizer, o que gera um cansaço físico e mental constante.",
+        marbleLayer: "A necessidade de controlar cada detalhe por medo de que as coisas deem errado sem você.",
         questions: [
-          "Sinto que se eu não controlar tudo, as coisas desmoronam",
-          "Tenho dificuldade de delegar",
-          "Assumo responsabilidades excessivas",
-          "Frequentemente fico sobrecarregado(a)",
-          "Tenho dificuldade de confiar plenamente nos outros",
-          "Tento resolver problemas sozinho(a)",
-          "Tenho dificuldade de descansar",
-          "Sinto culpa quando paro",
-          "Carrego emocionalmente muitas pessoas",
-          "Sinto que tudo depende de mim"
+          "Sinto que se eu não cuidar de tudo, as coisas desmoronam",
+          "Tenho dificuldade de passar tarefas para outras pessoas",
+          "Assumo mais responsabilidades do que aguento",
+          "Sinto um cansaço constante de carregar tantas obrigações",
+          "Tenho dificuldade de confiar que os outros farão direito",
+          "Tento resolver os problemas de todo mundo sozinho(a)",
+          "Tenho dificuldade de simplesmente parar e descansar",
+          "Sinto um peso na consciência quando tiro um tempo para mim",
+          "Acho que a estabilidade da minha família/casa depende 100% de mim",
+          "Sinto que sou a única pessoa responsável por fazer tudo dar certo"
         ]
       },
       {
         id: 4,
-        title: "BLOCO 4 — PERTENCIMENTO E IDENTIDADE",
-        shortTitle: "Pertencimento e Identidade",
-        profileName: "PERFIL PERTENCIMENTO E IDENTIDADE",
-        profileDesc: "Existe apego emocional às origens, medo de mudança e dificuldade de sustentar nova identidade.",
-        psychologicalCore: "Medo de trair a história familiar, sofrer rejeição dos pares ou não se reconhecer em um patamar financeiro mais elevado.",
+        title: "BLOCO 4 — MEDO DE SE AFASTAR DAS SUAS RAÍZES",
+        shortTitle: "Apego e Medo de Mudar",
+        profileName: "PERFIL APEGO AO PASSADO",
+        profileDesc: "Você tem receio de mudar de padrão de vida e se sentir 'fora do ninho' ou rejeitado(a).",
+        psychologicalCore: "Medo involuntário de prosperar e parecer arrogante para a família e amigos que não tiveram as mesmas oportunidades.",
+        marbleLayer: "Freio invisível que faz você dar um passo para trás para não se sentir diferente do seu grupo original.",
         questions: [
-          "Tenho dificuldade de me imaginar vivendo uma realidade melhor",
-          "Sinto culpa por crescer mais que pessoas próximas",
-          "Tenho medo de parecer arrogante ao prosperar",
-          "Sinto forte apego ao ambiente onde cresci",
-          "Tenho medo de abandonar minhas origens",
-          "Volto facilmente a padrões antigos",
-          "Tenho medo de não pertencer em ambientes melhores",
-          "Tenho dificuldade de sustentar mudanças positivas",
-          "Sinto que preciso continuar sendo quem sempre fui",
-          "Prosperar parece distante da minha realidade"
+          "Tenho dificuldade de me ver vivendo em um padrão de vida muito melhor",
+          "Sinto um certo desconforto por ter condições melhores que familiares ou amigos",
+          "Tenho medo de que me achem exibido(a) ou arrogante se eu melhorar de vida",
+          "Sinto uma ligação muito forte com o estilo de vida humilde onde cresci",
+          "Tenho receio de perder o contato com minha história se eu prosperar",
+          "Volto a cometer os mesmos erros financeiros do meu passado",
+          "Me sinto deslocado(a) ou inseguro(a) em ambientes mais chiques ou prósperos",
+          "Tenho dificuldade de manter conquistas financeiras por muito tempo",
+          "Sinto que preciso manter as coisas exatamente como meus pais faziam",
+          "Acredito que ter uma vida financeira muito próspera é algo distante de mim"
         ]
       },
       {
         id: 5,
-        title: "BLOCO 5 — AUTOSSABOTAGEM E EXPANSÃO",
-        shortTitle: "Autossabotagem e Expansão",
-        profileName: "PERFIL AUTOSSABOTADOR",
-        profileDesc: "O crescimento é interrompido por padrões inconscientes de bloqueio e regressão.",
-        psychologicalCore: "Dificuldade na ponte entre o saber técnico e a execução; criar sobressaltos e retrocessos assim que o topo parece próximo.",
+        title: "BLOCO 5 — TRAVAR NA HORA DE COLHER OS FRUTOS",
+        shortTitle: "Falta de Constância",
+        profileName: "PERFIL COMEÇA E NÃO TERMINA",
+        profileDesc: "Quando as coisas começam a dar certo, surge uma distração, um gasto imprevisto ou uma desistência.",
+        psychologicalCore: "Saber o que precisa ser feito na teoria, mas travar na prática bem no momento de consolidar o crescimento.",
+        marbleLayer: "Desviar do caminho no momento final criando imprevistos ou perdendo o foco.",
         questions: [
-          "Quando estou perto de crescer, algo dá errado",
-          "Adio decisões importantes",
-          "Tenho dificuldade de manter estabilidade financeira",
-          "Já perdi oportunidades por desorganização",
-          "Tenho medo de assumir posições maiores",
-          "Crio distrações em momentos decisivos",
-          "Parece que eu mesmo atrapalho meu crescimento",
-          "Tenho dificuldade de sustentar bons resultados",
-          "Frequentemente começo e não termino projetos",
-          "Sinto que mereço menos do que desejo"
+          "Quando estou quase alcançando um objetivo financeiro, algo dá errado",
+          "Adio decisões importantes por insegurança ou preguiça",
+          "Tenho dificuldade de manter a estabilidade no dinheiro (altos e baixos constantes)",
+          "Já perdi boas oportunidades por falta de organização ou atraso",
+          "Sinto receio de assumir responsabilidades financeiras maiores",
+          "Crio distrações para mim mesmo(a) em momentos decisivos",
+          "Sinto que eu mesmo(a) acabo atrapalhando meu próprio crescimento",
+          "Tenho dificuldade de manter bons resultados por muitos meses seguidos",
+          "Tenho a tendência de começar vários projetos e não terminar nenhum",
+          "No fundo, sinto que não mereço ter uma vida financeira tão boa"
         ]
       },
       {
         id: 6,
-        title: "BLOCO 6 — RELAÇÃO COM AUTORIDADE E AUTONOMIA",
-        shortTitle: "Autoridade e Autonomia",
-        profileName: "PERFIL ALIENAÇÃO À AUTORIDADE",
-        profileDesc: "Existem marcas emocionais ligadas a controle familiar, aprovação e dificuldade de autonomia emocional.",
-        psychologicalCore: "Necessidade latente de validação externa e receio excessivo do julgamento de figuras parentais ou autoridades.",
+        title: "BLOCO 6 — DEPENDENCIA DA OPINIÃO DOS OUTROS",
+        shortTitle: "Necessidade de Aprovação",
+        profileName: "PERFIL BUSCA DE APROVAÇÃO",
+        profileDesc: "Você fica travado(a) por medo de errar, de ser criticado(a) ou de decepcionar alguém.",
+        psychologicalCore: "Dar mais valor ao julgamento de terceiros do que à sua própria capacidade de escolher o que é melhor para você.",
+        marbleLayer: "Esperar pela autorização ou elogio dos outros antes de tomar as rédeas do seu dinheiro.",
         questions: [
-          "Cresci em ambiente controlador",
-          "Tenho dificuldade de tomar decisões sozinho(a)",
-          "Sinto necessidade de aprovação",
-          "Tenho medo de errar",
-          "Já senti que não podia conduzir minha própria vida",
-          "Tive familiares que interferiam excessivamente nas minhas escolhas",
-          "Tenho dificuldade de confiar totalmente em mim",
-          "Sinto necessidade constante de provar valor",
-          "Tenho medo de decepcionar pessoas importantes",
-          "Às vezes sinto que ainda vivo preso(a) emocionalmente à minha família"
+          "Cresci em um ambiente onde as decisões eram muito cobradas ou controladas",
+          "Tenho dificuldade de tomar decisões financeiras sem perguntar a alguém",
+          "Preocupo-me muito com o que os outros vão pensar das minhas escolhas",
+          "Tenho um medo grande de errar e passar vergonha",
+          "Sinto que ainda não tenho total liberdade para decidir minha própria vida",
+          "Pessoas da minha família tentam palpitar demais nas minhas decisões",
+          "Tenho dificuldade de confiar no meu próprio julgamento sobre dinheiro",
+          "Sinto que preciso provar meu valor para os outros o tempo todo",
+          "Tenho medo de decepcionar pessoas que são importantes para mim",
+          "Às vezes me sinto preso(a) às expectativas que a minha família criou para mim"
         ]
       }
     ];
@@ -267,47 +283,47 @@
       {
         min: 0,
         max: 50,
-        title: "NÍVEL BAIXO DE BLOQUEIO",
+        title: "CAMINHO LIVRE — POUCAS TRAVAS EMOCIONAIS",
         badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
         barColor: "#10b981",
-        description: "Você apresenta poucos sinais de travas emocionais profundas ligadas à prosperidade. Os desafios podem estar mais ligados a estratégia, disciplina ou direção prática.",
-        action: "Foque em aprimorar processos práticos de gestão financeira e planejamento de metas claras."
+        description: "Sua relação com o dinheiro é saudável e equilibrada. Seus desafios atuais são mais de ajuste prático de rotina do que bloqueios profundos.",
+        action: "Aproveite esta boa fase para montar uma reserva de segurança, definir metas de longo prazo e manter o hábito da organização."
       },
       {
         min: 51,
         max: 100,
-        title: "NÍVEL MODERADO DE BLOQUEIO",
+        title: "CUIDADO MODERADO — ALGUNS PONTOS DE ATENÇÃO",
         badgeColor: "bg-blue-100 text-blue-800 border-blue-200",
         barColor: "#3b82f6",
-        description: "Existem padrões emocionais que começam a impactar sua organização, crescimento e estabilidade financeira. Algumas crenças e comportamentos já interferem diretamente na prosperidade.",
-        action: "Identifique os gatilhos emocionais específicos dos seus blocos mais elevados para evitar estagnação."
+        description: "Você consegue avançar, mas existem alguns momentos em que a correria, a ansiedade ou a hesitação atrapalham seus passos.",
+        action: "Fique atento(a) aos momentos de cansaço para não fazer compras por impulso nem adiar pagamentos importantes."
       },
       {
         min: 101,
         max: 180,
-        title: "NÍVEL ELEVADO DE BLOQUEIO",
+        title: "TENSÃO INTERMEDIÁRIA — ANSIEDADE E CANSAÇO ACUMULADO",
         badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
         barColor: "#f59e0b",
-        description: "Você apresenta conflitos emocionais importantes relacionados a dinheiro, crescimento, identidade e organização da vida. O emocional já interfere diretamente nas decisões, rotina e expansão profissional.",
-        action: "Trabalhe ativamente na reestruturação de crenças e adote ferramentas formais de gestão para conter o desgaste."
+        description: "A preocupação constante com dinheiro está pesando na sua rotina. É comum você se sentir sobrecarregado(a) ou com receio do futuro.",
+        action: "Hora de organizar a casa: separe um tempo para colocar as contas no papel, delegue o que puder e evite assumir responsabilidades dos outros."
       },
       {
         min: 181,
         max: 240,
-        title: "NÍVEL INTENSO DE AUTOSSABOTAGEM",
+        title: "ALTA SOBRECARGA — SINAL DE ALERTA NO DIA A DIA",
         badgeColor: "bg-orange-100 text-orange-800 border-orange-200",
         barColor: "#f97316",
-        description: "Sua vida financeira e profissional provavelmente está sendo fortemente impactada por mecanismos inconscientes de sobrevivência, medo, controle, culpa ou pertencimento emocional.",
-        action: "Priorize desacelerar e revisar acordos emocionais implícitos com sua história familiar e pessoal."
+        description: "Sua vida financeira está sendo muito impactada pelo estresse, pela falta de tempo ou pelo medo de errar. Você vive apagando incêndios.",
+        action: "Respire fundo. Entenda que dívidas ou aperto de caixa são apenas uma fase passageira e não dizem quem você é como pessoa."
       },
       {
         min: 241,
         max: 300,
-        title: "NÍVEL CRÍTICO DE APRISIONAMENTO EMOCIONAL",
+        title: "TRAVAMENTO INTENSO — NECESSIDADE DE PAUSA E RESTRUCTURAÇÃO",
         badgeColor: "bg-rose-100 text-rose-800 border-rose-200",
         barColor: "#ef4444",
-        description: "O emocional está comandando grande parte das suas decisões financeiras, profissionais e organizacionais. Há fortes sinais de bloqueios inconscientes relacionados à prosperidade, autonomia, identidade e sustentação do crescimento.",
-        action: "É fundamental um acompanhamento estruturado para desfazer nós emocionais e reprogramar sua conduta diária."
+        description: "Você sente que está sempre no limite, correndo contra o tempo e sem enxergar uma saída clara para ter estabilidade e paz.",
+        action: "Não se desespere. O primeiro passo é parar de se culpar. Comece arrumando uma pequena coisa por dia e peça ajuda se necessário."
       }
     ];
 
@@ -392,6 +408,7 @@
             profileName: block.profileName,
             profileDesc: block.profileDesc,
             psychologicalCore: block.psychologicalCore,
+            marbleLayer: block.marbleLayer,
             score: sum,
             maxScore: 50,
             completed: count === 10
@@ -407,7 +424,6 @@
         return SCORE_TIERS.find(t => totalScore >= t.min && totalScore <= t.max) || SCORE_TIERS[0];
       }, [totalScore]);
 
-      // Sorted blocks by score descending
       const sortedBlocks = useMemo(() => {
         return [...blockScores].sort((a, b) => b.score - a.score);
       }, [blockScores]);
@@ -417,62 +433,108 @@
       const top3 = sortedBlocks[2] || blockScores[2];
       const lowestBlock = sortedBlocks[sortedBlocks.length - 1] || blockScores[5];
 
-      // Generates the deep narrative text structured like the user's example
       const personalizedReportText = useMemo(() => {
         const name = userInfo.name ? userInfo.name.trim() : "Participante";
-        const challenge = userInfo.goal ? userInfo.goal.trim() : "alcançar estabilidade e crescimento sem medo de errar";
+        const challenge = userInfo.goal ? userInfo.goal.trim() : "ter mais estabilidade, tranquilidade e organização";
+        const profession = userInfo.profession ? userInfo.profession.trim() : "sua profissão/atuação";
 
-        let text = `${name}, analisando seu Mapeamento Emocional Financeiro, você apresentou ${totalScore} pontos de um total de 300, resultado que, dentro da proposta do instrumento, indica um ${currentTier.title.toLowerCase()}.\n\n`;
+        let text = `=== RELATÓRIO SIMPLIFICADO & PLANO DE AÇÃO FINANCEIRO ===\n`;
+        text += `Nome: ${name}\n`;
+        text += `Atuação: ${profession}\n`;
+        text += `Principal objetivo informado: "${challenge}"\n`;
+        text += `Pontuação Total: ${totalScore} de 300 pontos (${currentTier.title})\n\n`;
 
-        text += `O principal ponto identificado foi ${top1.shortTitle}, com ${top1.score}/50 pontos. Em seguida aparecem ${top2.shortTitle}, com ${top2.score}/50, e ${top3.shortTitle}, com ${top3.score}/50.\n\n`;
+        text += `--------------------------------------------------\n`;
+        text += `1. RESULTADO GERAL E SEUS PONTOS DE MAIOR ATENÇÃO\n`;
+        text += `--------------------------------------------------\n\n`;
 
-        text += `Isso mostra um padrão diferente de simplesmente "não saber lidar com dinheiro". Seu resultado sugere que o medo de errar, perder ou tomar uma decisão equivocada pode levar você a buscar um nível muito alto de controle e segurança antes de agir.\n\n`;
+        text += `Olá, ${name}! Analisando suas respostas, identificamos que você somou ${totalScore} pontos de um máximo de 300.\n\n`;
+
+        text += `O ponto mais importante que você precisa saber é: VOCÊ NÃO É A SUA SITUAÇÃO FINANCEIRA ATUAL.\n`;
+        text += `Estar com contas apertadas, insegurança ou dívidas descreve apenas o seu MOMENTO atual, mas não diz quem você é nem o seu valor como pessoa. O dinheiro deve servir para trazer tranquilidade para sua vida, e não para tirar o seu sono.\n\n`;
+
+        text += `O seu teste mostrou que as áreas onde você mais gasta energia no dia a dia são:\n`;
+        text += `• 1º Maior Ponto de Atenção: ${top1.shortTitle} (${top1.score} de 50 pontos)\n`;
+        text += `• 2º Ponto de Atenção: ${top2.shortTitle} (${top2.score} de 50 pontos)\n`;
+        text += `• 3º Ponto de Atenção: ${top3.shortTitle} (${top3.score} de 50 pontos)\n\n`;
+
+        text += `Por outro lado, a área mais tranquila para você no momento é: ${lowestBlock.shortTitle} (${lowestBlock.score} de 50 pontos).\n\n`;
 
         if (userInfo.goal) {
-          text += `Como você mesma(o) apontou que seu maior desafio é "${challenge}", existe uma conexão direta e importante entre o que você percebe conscientemente e o que aparece no mapeamento.\n\n`;
+          text += `O objetivo que você escreveu ("${challenge}") tem tudo a ver com o seu resultado em ${top1.shortTitle}. A dificuldade prática que você sente no dia a dia é consequência direta desse estresse acumulado.\n\n`;
         }
 
-        // Cycle logic based on top block
-        if (top1.blockIndex === 2) { // Controle e Sobrecarga
-          text += `O excesso de controle pode funcionar inicialmente como uma proteção:\n"Se eu controlar tudo, diminuo as chances de errar."\n\n`;
-          text += `Mas existe um problema: quanto maior a necessidade de controlar, maior pode ser a sobrecarga emocional. E quando nenhuma decisão parece suficientemente segura, a pessoa pode começar a adiar, evitar ou questionar excessivamente suas próprias escolhas.\n\n`;
-          text += `Isso pode criar um ciclo:\nMedo de perder → necessidade de controle → sobrecarga → insegurança → dificuldade para agir → sensação de incapacidade → mais necessidade de controle.\n\n`;
-        } else if (top1.blockIndex === 0) { // Sobrevivência e Caos
-          text += `O estado constante de urgência e apagamento de incêndios atua como um escudo protetor:\n"Se eu estiver sempre ocupado(a) resolvendo o agora, não preciso encarar decisões maiores sobre o futuro."\n\n`;
-          text += `O ciclo gerado é:\nMedo do futuro → falta de planejamento → imprevisto/caos → correria extrema → exaustão → adiar decisões estratégicas → mais caos.\n\n`;
-        } else if (top1.blockIndex === 1) { // Medo da Prosperidade
-          text += `A ansiedade ligada ao crescimento financeiro opera como uma barreira protetora invisível:\n"Se eu não crescer demais, continuo seguro(a) de perdas ou julgamentos."\n\n`;
-          text += `O ciclo gerado é:\nDesejo de expansão → aproximação de bons resultados → pico de ansiedade/medo da perda → autoboicote silencioso → estagnação → alívio temporário → culpa por não crescer.\n\n`;
-        } else if (top1.blockIndex === 3) { // Pertencimento e Identidade
-          text += `A necessidade inconsciente de alinhamento com a origem funciona como um freio invisível:\n"Se eu prosperar muito mais que meus pares, posso perder o afeto e o pertencimento."\n\n`;
-          text += `O ciclo gerado é:\nOportunidade de ganho → sensação inconsciente de culpa/traição → recuo ou descarte de ganhos → retorno ao padrão antigo → alívio de pertencer → desejo reprimido de prosperar.\n\n`;
-        } else if (top1.blockIndex === 4) { // Autossabotagem e Expansão
-          text += `A interrupção recorrente antes da consolidação do sucesso funciona como defesa contra a exposição:\n"Se eu mesmo atrapalhar meu crescimento, evito o risco do fracasso exposto no topo."\n\n`;
-          text += `O ciclo gerado é:\nInício de projeto promissor → proximidade de consolidação → criação de distrações/desorganização → fracasso/regressão → confirmação da crença "não consigo" → reinício do ciclo.\n\n`;
-        } else { // Autoridade e Autonomia
-          text += `A dependência de aprovação e o medo do julgamento minam a capacidade de decisão independente:\n"Se eu depender da aprovação de terceiros, transfiro a responsabilidade caso dê errado."\n\n`;
-          text += `O ciclo gerado é:\nNecessidade de decidir → medo de errar/decepcionar → busca excessiva por validação externa → paralisia/dúvida → perda da oportunidade → sensação de incapacidade autônoma.\n\n`;
+        text += `--------------------------------------------------\n`;
+        text += `2. ENTENDENDO O QUE ESTÁ TE ATRAPALHANDO\n`;
+        text += `--------------------------------------------------\n\n`;
+
+        text += `A) O PRINCIPAL BLOQUEIO: ${top1.shortTitle.toUpperCase()}\n`;
+        text += `O que acontece: ${top1.psychologicalCore}\n`;
+        text += `Como isso afeta seu dia a dia: Você gasta muita energia tentando se proteger ou resolver urgências. Com isso, o dinheiro acaba gerando mais preocupação do que sensação de segurança.\n\n`;
+
+        text += `B) O SEGUNDO BLOQUEIO: ${top2.shortTitle.toUpperCase()}\n`;
+        text += `O que acontece: ${top2.psychologicalCore}\n`;
+        text += `Como isso afeta seu dia a dia: Toda vez que você tenta dar um passo para crescer, surge uma insegurança ou distração que faz você dar um passo para trás e voltar para a zona conhecida.\n\n`;
+
+        text += `--------------------------------------------------\n`;
+        text += `3. O HABITO QUE VOCÊ PRECISA QUEBRAR\n`;
+        text += `--------------------------------------------------\n\n`;
+
+        if (top1.blockIndex === 2) {
+          text += `Seu hábito atual: TENTAR FAZER TUDO SOZINHO(A)\n`;
+          text += `Medo de algo dar errado → Assume todas as tarefas → Fica exausto(a) e estressado(a) → Perde a paciência → Não consegue planejar o futuro → Sente que só você faz as coisas no seu trabalho ou na sua casa.\n\n`;
+        } else if (top1.blockIndex === 0) {
+          text += `Seu hábito atual: VIVER NA CORRERIA E APAGANDO INCÊNDIOS\n`;
+          text += `Ansiedade com o dia de amanhã → Não para para planejar → Surgem imprevistos → Correria para resolver tudo de última hora → Exaustão → Adia decisões importantes → Mais correria.\n\n`;
+        } else if (top1.blockIndex === 1) {
+          text += `Seu hábito atual: RECEIO DE CRESCER E TER PROBLEMAS\n`;
+          text += `Vontade de melhorar de vida → O dinheiro começa a entrar → Surge uma preocupação ou culpa invisível → Gastos sem necessidade ou desorganização → O dinheiro acaba → Alívio por voltar ao normal.\n\n`;
+        } else if (top1.blockIndex === 3) {
+          text += `Seu hábito atual: MEDO DE FICAR DIFERENTE DAS SUAS RAÍZES\n`;
+          text += `Oportunidade de ganhar mais → Receio de parecer diferente ou distante da família/amigos → Decisões que fazem você perder o dinheiro → Volta ao nível de antes → Alívio por continuar pertencendo ao grupo.\n\n`;
+        } else if (top1.blockIndex === 4) {
+          text += `Seu hábito atual: DESISTIR OU DESVIAR NA HORA FINAL\n`;
+          text += `Começa um projeto promissor → O resultado positivo se aproxima → Cria distrações, atrasos ou compras fora de hora → O projeto para na metade → Sensação de 'comigo nada dá certo'.\n\n`;
+        } else {
+          text += `Seu hábito atual: ESPERAR PELA APROVAÇÃO DOS OUTROS\n`;
+          text += `Precisa tomar uma decisão → Medo de errar ou ser criticado(a) → Pergunta a opinião de várias pessoas → Fica confuso(a) e trava → Perde o momento certo → Sente frustração.\n\n`;
         }
 
-        // Secondary block descriptions
-        text += `Outro ponto importante é ${top2.shortTitle} (${top2.score}/50). Nesse resultado, o crescimento financeiro pode estar emocionalmente associado a riscos, responsabilidades elevadas ou possibilidade de perdas. Assim, desejar prosperar e, ao mesmo tempo, ter medo das consequências de crescer podem coexistir.\n\n`;
+        text += `--------------------------------------------------\n`;
+        text += `4. PASSO A PASSO PRÁTICO PARA DESTRAVAR HOJE\n`;
+        text += `--------------------------------------------------\n\n`;
 
-        text += `O índice de ${top3.shortTitle} (${top3.score}/50) também mostra uma influência significativa. Isso indica que parte das suas decisões diárias ainda pode ser tomada buscando principalmente segurança imediata e proteção contra riscos.\n\n`;
+        text += `PASSO 1: MDE A SUA FORMA DE PENSAR SOBRE O DINHEIRO\n`;
+        text += `• Diga para você mesmo(a) todos os dias: "O dinheiro é apenas uma ferramenta. Minha situação hoje é passageira e não define quem eu sou". Elimine a culpa do passado.\n\n`;
 
-        text += `Por outro lado, ${lowestBlock.shortTitle} ficou em ${lowestBlock.score}/50, sendo um dos menores índices. Portanto, o resultado sugere que ${lowestBlock.profileDesc.toLowerCase()} não é o fator central causador do seu bloqueio atual.\n\n`;
+        text += `PASSO 2: APRENDA A RESPIRAR E AVALIAR SUAS COMPRAS\n`;
+        text += `• Aceite que não existe garantia de 100% em nada na vida. Decisões requerem coragem simples.\n`;
+        text += `• Antes de gastar ou adiar uma conta, pergunte-se: "Estou fazendo isso com calma ou estou agindo no impulso da ansiedade?".\n`;
+        text += `• Dê valor às coisas boas que você já construiu até aqui.\n\n`;
 
-        text += `--- SOLUÇÕES E AMADURECIMENTO EMOCIONAL ---\n\n`;
-        text += `Dentro da teoria do Amadurecimento Emocional, o objetivo não seria eliminar o medo, mas aprender a não permitir que o medo seja o responsável pelas decisões.\n\n`;
-        text += `Uma pessoa emocionalmente madura não é aquela que nunca sente medo de perder. É aquela que consegue reconhecer o medo, compreender sua origem e ainda assim tomar decisões conscientes.\n\n`;
-        text += `Aqui podemos aplicar os Três Pilares:\n\n`;
-        text += `1. ACEITAÇÃO: aceitar que errar e perder fazem parte da vida e que nenhuma decisão financeira oferece risco zero.\n`;
-        text += `2. ENTENDIMENTO: compreender o que realmente está por trás do medo. É medo de perder dinheiro? De fracassar? De decepccionar alguém? De tomar uma decisão errada? Ou de perder a sensação de segurança?\n`;
-        text += `3. ADMIRAÇÃO: reconhecer sua própria capacidade de aprender, corrigir rotas e recomeçar. Não medir seu valor pelo resultado de uma única decisão.\n\n`;
+        text += `PASSO 3: AÇÃO PRÁTICA PARA MUDAR O SEU PRINCIPAL PONTO DE ATENÇÃO (${top1.shortTitle.toUpperCase()})\n`;
+        if (top1.blockIndex === 2) {
+          text += `• Peça ajuda em 2 tarefas simples nesta semana na sua casa ou no trabalho. Pare de querer conferir tudo até os mínimos detalhes. Defina um horário limite para parar de trabalhar à noite.\n\n`;
+        } else if (top1.blockIndex === 0) {
+          text += `• Tire 15 minutos logo ao acordar, em silêncio, para anotar as 3 tarefas financeiras prioritárias do dia antes de olhar redes sociais ou responder mensagens.\n\n`;
+        } else if (top1.blockIndex === 1) {
+          text += `• Reserve um pequeno valor fixo no mês exclusivamente para você tomar um café ou fazer algo agradável sem ter que dar explicações a ninguém e sem culpa.\n\n`;
+        } else if (top1.blockIndex === 3) {
+          text += `• Entenda que prosperar financeira e profissionalmente é a melhor maneira de ajudar e honrar sua família, e não um motivo de vergonha.\n\n`;
+        } else if (top1.blockIndex === 4) {
+          text += `• Faça um compromisso: não comece nenhuma ideia nova até terminar as 2 coisas mais importantes que você já deixou pela metade.\n\n`;
+        } else {
+          text += `• Tome uma decisão financeira simples nesta semana sem pedir conselho ou validação para ninguém. Confie mais na sua própria capacidade.\n\n`;
+        }
 
-        text += `O principal desenvolvimento para você parece estar na construção de uma relação diferente com o risco:\nsegurança não significa controlar tudo.\n\n`;
-        text += `Às vezes, maturidade é conseguir dizer:\n"Eu não tenho como garantir que não vou perder. Mas posso me preparar, analisar, decidir e confiar na minha capacidade de lidar com o que acontecer."\n\n`;
-        text += `Esse pode ser um caminho importante para transformar o medo de errar em capacidade de decidir, e o excesso de controle em consciência e autonomia.\n\n`;
-        text += `*Este mapeamento é uma ferramenta de reflexão e identificação de padrões emocionais, não um diagnóstico clínico.`;
+        text += `PASSO 4: CULTIVE O EQUILÍBRIO NA SUA CASA\n`;
+        text += `• Busque paz interior, paciência e autocontrole nas suas escolhas diárias. O dinheiro organizado serve para trazer paz para sua família, não brigas.\n\n`;
+
+        text += `PASSO 5: AVALIAÇÃO SEMANAL SIMPLES\n`;
+        text += `• Todo domingo, faça uma pergunta rápida a si mesmo(a): "Minhas escolhas de dinheiro nesta semana foram feitas com calma ou foram guiadas pela pressa e pelo medo?". Ajuste a rota para a semana seguinte.\n\n`;
+
+        text += `==================================================\n`;
+        text += `* Este teste é uma ferramenta de reflexão prática para te ajudar a criar hábitos financeiros mais leves e organizados no dia a dia.`;
 
         return text;
       }, [userInfo, totalScore, currentTier, top1, top2, top3, lowestBlock]);
@@ -492,21 +554,8 @@
       };
 
       const handleCopyReport = () => {
-        const text = `=== MAPEAMENTO EMOCIONAL FINANCEIRO ===\n` +
-          `-- Dados do Participante --\n` +
-          `Nome: ${userInfo.name || 'Não informado'}\n` +
-          `Idade: ${userInfo.age ? userInfo.age + ' anos' : 'Não informado'}\n` +
-          `Profissão: ${userInfo.profession || 'Não informado'}\n` +
-          `WhatsApp: ${userInfo.phone || 'Não informado'}\n` +
-          `Faixa de Renda: ${userInfo.income || 'Não informado'}\n` +
-          `Maior Desafio: ${userInfo.goal || 'Não informado'}\n\n` +
-          `==========================================\n` +
-          `DIAGNÓSTICO DETALHADO & ANÁLISE EMOCIONAL\n` +
-          `==========================================\n\n` +
-          personalizedReportText;
-
         const el = document.createElement('textarea');
-        el.value = text;
+        el.value = personalizedReportText;
         document.body.appendChild(el);
         el.select();
         document.execCommand('copy');
@@ -521,26 +570,25 @@
       return (
         <div className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-10 pb-28 sm:pb-16">
           
-          {}
           <header className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-slate-200/80 mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-semibold tracking-wide uppercase mb-2">
-                  <Icon name="Brain" className="w-4 h-4" />
-                  Ferramenta de Autoconhecimento & Maturidade Emocional
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold tracking-wide uppercase mb-2">
+                  <Icon name="Tree" className="w-4 h-4 text-emerald-600" />
+                  Mapeamento de Hábitos e Emoções
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                   MAPEAMENTO EMOCIONAL FINANCEIRO
                 </h1>
                 <p className="text-slate-600 text-xs sm:text-sm mt-1">
-                  Diagnóstico de Padrões Financeiros, Emocionais, Comportamentais e Amadurecimento
+                  Descubra o que está travando o seu dinheiro e veja o passo a passo simples para organizar suas finanças com paz.
                 </p>
               </div>
 
               <div className="flex items-center gap-3">
                 {!isSubmitted && (
                   <div className="bg-slate-50 border border-slate-200 p-3 sm:p-4 rounded-xl text-center min-w-[140px]">
-                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Progresso Geral</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Seu Progresso</span>
                     <div className="text-lg sm:text-2xl font-black text-indigo-600 mt-0.5">
                       {answeredCount} <span className="text-xs font-normal text-slate-400">/ 60</span>
                     </div>
@@ -569,21 +617,21 @@
             /* ================= VIEW: QUESTIONÁRIO ================= */
             <div className="space-y-6">
 
-              {}
+              {/* Formulário de Dados */}
               <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm space-y-4">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                   <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
                     <Icon name="User" className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">Dados do Participante</h3>
-                    <p className="text-[11px] sm:text-xs text-slate-500">Preencha seus dados para personalizar o relatório reflexivo do diagnóstico</p>
+                    <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">Seus Dados Principais</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">Preencha para personalizarmos as orientações finais para você</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 text-xs">
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Nome Completo</label>
+                    <label className="block font-semibold text-slate-700 mb-1">Seu Nome Completo</label>
                     <input
                       type="text"
                       placeholder="Ex: Maria Silva"
@@ -605,10 +653,10 @@
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Profissão / Atuação</label>
+                    <label className="block font-semibold text-slate-700 mb-1">Sua Profissão ou Atuação</label>
                     <input
                       type="text"
-                      placeholder="Ex: Empresário(a), Autônomo(a)"
+                      placeholder="Ex: Comerciante, Autônomo(a), CLT"
                       value={userInfo.profession}
                       onChange={(e) => setUserInfo({ ...userInfo, profession: e.target.value })}
                       className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-slate-900 font-medium"
@@ -616,7 +664,7 @@
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">WhatsApp / Telefone</label>
+                    <label className="block font-semibold text-slate-700 mb-1">WhatsApp de Contato</label>
                     <input
                       type="text"
                       placeholder="(00) 00000-0000"
@@ -627,7 +675,7 @@
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Faixa de Renda Mensal</label>
+                    <label className="block font-semibold text-slate-700 mb-1">Sua Renda Aproximada</label>
                     <select
                       value={userInfo.income}
                       onChange={(e) => setUserInfo({ ...userInfo, income: e.target.value })}
@@ -643,10 +691,10 @@
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Maior Desafio Atual</label>
+                    <label className="block font-semibold text-slate-700 mb-1">Seu Maior Objetivo Atual</label>
                     <input
                       type="text"
-                      placeholder="Ex: Vencer o medo de errar e perder"
+                      placeholder="Ex: Quitar dívidas, ter paz para investir"
                       value={userInfo.goal}
                       onChange={(e) => setUserInfo({ ...userInfo, goal: e.target.value })}
                       className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-slate-900 font-medium"
@@ -655,10 +703,10 @@
                 </div>
               </div>
 
-              {/* Instruções da Escala */}
+              {/* Instruções de Resposta */}
               <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-sm">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
-                  Instrução: Para cada afirmação, marque uma nota de 0 a 5
+                  Como responder: Escolha uma nota de 0 a 5 dependendo da frequência com que isso acontece no seu dia a dia
                 </h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-xs">
                   {SCALE_OPTIONS.map(opt => (
@@ -670,7 +718,7 @@
                 </div>
               </div>
 
-              {}
+              {/* Seletor de Blocos */}
               <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
                 {MAP_DATA.map((block, idx) => {
                   const bScore = blockScores[idx];
@@ -685,7 +733,7 @@
                           : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                       }`}
                     >
-                      <span>BLOCO {idx + 1}</span>
+                      <span>PARTE {idx + 1}</span>
                       {bScore.completed ? (
                         <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-emerald-300' : 'bg-emerald-500'}`}></span>
                       ) : (
@@ -698,24 +746,25 @@
                 })}
               </div>
 
-              {/* Bloco Atual */}
+              {/* Bloco Atual de Pergunta */}
               <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-7 space-y-6">
                 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-2">
                   <div>
                     <span className="text-xs font-extrabold text-indigo-600 uppercase tracking-wider">
-                      BLOCO {currentBlockIndex + 1} DE 6
+                      PARTE {currentBlockIndex + 1} DE 6
                     </span>
                     <h2 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">
                       {currentBlock.title}
                     </h2>
+                    <p className="text-xs text-slate-500 mt-0.5">{currentBlock.profileDesc}</p>
                   </div>
                   <div className="bg-indigo-50 border border-indigo-100 px-3 py-1.5 rounded-xl text-xs font-bold text-indigo-700 self-start sm:self-auto">
                     Subtotal: {blockScores[currentBlockIndex].score} / 50 pts
                   </div>
                 </div>
 
-                {/* Lista de Perguntas do Bloco */}
+                {/* Perguntas */}
                 <div className="space-y-5">
                   {currentBlock.questions.map((qText, qIdx) => {
                     const key = `b${currentBlockIndex}_q${qIdx}`;
@@ -739,7 +788,7 @@
                           </p>
                         </div>
 
-                        {/* Botões de Nota (0 a 5) */}
+                        {/* Botões de Nota */}
                         <div className="grid grid-cols-6 gap-1.5 sm:gap-2 pt-1">
                           {SCALE_OPTIONS.map((opt) => {
                             const isSelected = currentVal === opt.value;
@@ -767,7 +816,7 @@
                   })}
                 </div>
 
-                {/* Botões de Navegação entre Blocos */}
+                {/* Navegação entre blocos */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100 gap-3">
                   <button
                     disabled={currentBlockIndex === 0}
@@ -782,7 +831,7 @@
                     }`}
                   >
                     <Icon name="ChevronLeft" className="w-4 h-4" />
-                    Bloco Anterior
+                    Parte Anterior
                   </button>
 
                   {currentBlockIndex < MAP_DATA.length - 1 ? (
@@ -793,7 +842,7 @@
                       }}
                       className="px-5 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 shadow-md transition-all"
                     >
-                      Próximo Bloco
+                      Próxima Parte
                       <Icon name="ChevronRight" className="w-4 h-4" />
                     </button>
                   ) : (
@@ -809,7 +858,7 @@
                       className="px-6 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2 shadow-lg transition-all"
                     >
                       <Icon name="CheckCircle" className="w-4 h-4" />
-                      Ver Diagnóstico Completo
+                      Ver Meu Resultado e Plano de Ação
                     </button>
                   )}
                 </div>
@@ -818,13 +867,13 @@
 
             </div>
           ) : (
-            /* ================= VIEW: RESULTADO FINAL & ANÁLISE DETALHADA ================= */
+            /* ================= VIEW: RESULTADO FINAL & PLANO DE AÇÃO ================= */
             <div className="space-y-6">
 
-              {/* Banner do Resultado Geral */}
+              {/* Header do Resultado */}
               <div className="bg-white rounded-2xl border border-slate-200/80 shadow-md p-6 sm:p-8 relative overflow-hidden">
                 
-                {/* Resumo dos dados do Participante no Resultado */}
+                {/* Resumo do usuário */}
                 {(userInfo.name || userInfo.profession || userInfo.phone || userInfo.goal) && (
                   <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80 text-xs text-slate-700 mb-6 space-y-2">
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
@@ -840,7 +889,7 @@
                     </div>
                     {userInfo.goal && (
                       <div className="text-slate-600 text-xs pt-1">
-                        <strong className="text-slate-800">Maior Desafio Declarado:</strong> "{userInfo.goal}"
+                        <strong className="text-slate-800">Seu objetivo declarado:</strong> "{userInfo.goal}"
                       </div>
                     )}
                   </div>
@@ -854,7 +903,7 @@
                       Mapeamento Concluído com Sucesso
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                      Pontuação Geral: <span className="text-indigo-600">{totalScore}</span> / 300 PONTOS
+                      Pontuação Total: <span className="text-indigo-600">{totalScore}</span> / 300 PONTOS
                     </h2>
                     
                     <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1">
@@ -868,13 +917,13 @@
                     </p>
                   </div>
 
-                  {/* Meter Card */}
+                  {/* Medidor de intensidade */}
                   <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 text-center min-w-[240px] w-full lg:w-auto">
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Nível de Bloqueio Emocional</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Nível de Estresse Acumulado</span>
                     <div className="text-4xl font-black text-slate-900 my-2">
                       {Math.round((totalScore / 300) * 100)}%
                     </div>
-                    <p className="text-xs text-slate-500 mb-3">Intensidade do Aprisionamento</p>
+                    <p className="text-xs text-slate-500 mb-3">Grau de ruído na sua rotina</p>
                     <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
                       <div 
                         className="h-full rounded-full transition-all duration-500"
@@ -889,7 +938,42 @@
                 </div>
               </div>
 
-              {/* SEÇÃO PRINCIPAL: DIAGNÓSTICO PROFUNDO E RELATÓRIO NARRATIVO */}
+              {/* Dois cards explicativos simples */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* Princípio 1: Quem você é vs Sua Situação */}
+                <div className="bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-900 text-white rounded-2xl p-6 shadow-md border border-emerald-800/40 space-y-4">
+                  <div className="flex items-center gap-2.5 text-emerald-400 font-bold text-xs uppercase tracking-wider">
+                    <Icon name="Tree" className="w-5 h-5 text-emerald-400" />
+                    Regra Nº 1: Separe Suas Finanças do Seu Valor
+                  </div>
+                  <h3 className="text-lg font-black text-white">Você NÃO é a sua situação financeira atual</h3>
+                  <p className="text-xs text-emerald-100/90 leading-relaxed">
+                    Estar com a conta no vermelho ou com medo do futuro descreve apenas a sua <strong>fase atual</strong>, mas jamais quem você é como pessoa. Seu valor, sua história e seu potencial de recomeçar continuam intactos.
+                  </p>
+                  <div className="p-3 bg-white/10 rounded-xl text-xs border border-white/10 italic text-emerald-200">
+                    "O dinheiro é apenas uma ferramenta de apoio. Quando você tira a culpa da cabeça, fica muito mais fácil enxergar o caminho certo."
+                  </div>
+                </div>
+
+                {/* Princípio 2: Tirar as barreiras do caminho */}
+                <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-white rounded-2xl p-6 shadow-md border border-indigo-800/40 space-y-4">
+                  <div className="flex items-center gap-2.5 text-amber-400 font-bold text-xs uppercase tracking-wider">
+                    <Icon name="Hammer" className="w-5 h-5 text-amber-400" />
+                    Regra Nº 2: Simplificar em Vez de Complicar
+                  </div>
+                  <h3 className="text-lg font-black text-white">Tire do caminho o que está te atrapalhando</h3>
+                  <p className="text-xs text-indigo-100/90 leading-relaxed">
+                    Você não precisa se transformar em outra pessoa para ter sucesso. Precisa apenas remover do seu dia a dia o <strong>excesso de correria, a necessidade de controlar tudo sozinho(a) e o medo de errar</strong>.
+                  </p>
+                  <div className="p-3 bg-white/10 rounded-xl text-xs border border-white/10 italic text-amber-200">
+                    "Mudanças reais começam quando você decide fazer uma pequena escolha diferente a cada dia, sem pressa nem desespero."
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Diagnóstico detalhado em linguagem simples */}
               <div className="bg-white rounded-2xl border border-slate-200/80 shadow-lg p-6 sm:p-9 space-y-6">
                 
                 <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
@@ -898,23 +982,22 @@
                   </div>
                   <div>
                     <span className="text-xs font-extrabold text-indigo-600 uppercase tracking-wider">
-                      Análise Individualizada
+                      Sua Análise Personalizada
                     </span>
                     <h3 className="text-xl sm:text-2xl font-black text-slate-900">
-                      Diagnóstico Detalhado do seu Mapeamento
+                      Entendendo Seus Resultados de Forma Clara
                     </h3>
                   </div>
                 </div>
 
-                {/* Texto Corrido Narrativo Explicativo */}
                 <div className="prose prose-slate max-w-none text-slate-800 text-sm sm:text-base leading-relaxed space-y-4 bg-slate-50/70 p-5 sm:p-7 rounded-2xl border border-slate-200/70">
                   
                   <p className="font-semibold text-slate-900 text-base sm:text-lg border-b border-slate-200 pb-3">
-                    {userInfo.name ? `${userInfo.name},` : "Olá,"} analisando seu Mapeamento Emocional Financeiro, você apresentou <span className="text-indigo-600 font-black">{totalScore} pontos</span> de um total de 300, resultado que indica um <strong className="text-indigo-700">{currentTier.title.toLowerCase()}</strong>.
+                    {userInfo.name ? `${userInfo.name},` : "Olá,"} seu teste indicou <span className="text-indigo-600 font-black">{totalScore} pontos</span> (de 300), o que mostra um estado de <strong className="text-indigo-700">{currentTier.title.toLowerCase()}</strong>.
                   </p>
 
                   <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-1.5">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Principais Blocos Identificados:</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Seus 3 Principais Pontos de Atenção:</p>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs sm:text-sm font-semibold">
                       <div className="p-2.5 rounded-lg bg-rose-50 text-rose-800 border border-rose-100">
                         1º {top1.shortTitle}: <strong>{top1.score}/50 pts</strong>
@@ -929,160 +1012,161 @@
                   </div>
 
                   <p>
-                    Isso mostra um padrão diferente de simplesmente <em>"não saber lidar com dinheiro"</em>. Seu resultado sugere que o medo de errar, perder ou tomar uma decisão equivocada pode levar você a buscar um nível muito alto de controle e segurança antes de agir.
+                    Seu resultado mostra que a sua maior dificuldade atual não é falta de inteligência nem falta de esforço, mas sim o <strong>cansaço emocional e o hábito de agir sob estresse</strong>. Quando a preocupação toma conta, a gente tende a tomar decisões na pressa para aliviar a ansiedade daquele momento.
                   </p>
 
                   {userInfo.goal && (
                     <div className="p-4 rounded-xl bg-indigo-50/80 border border-indigo-100 text-indigo-950 font-medium text-xs sm:text-sm leading-relaxed">
-                      💡 <strong>Conexão Consciente:</strong> Como você mesma(o) apontou que seu maior desafio é <span className="underline decoration-indigo-300 font-bold">"{userInfo.goal}"</span>, existe uma conexão direta e importante entre o que você percebe conscientemente na sua rotina e o que aparece nos números deste mapeamento.
+                      💡 <strong>Sobre o seu objetivo:</strong> Você mencionou que seu maior desafio hoje é <span className="underline decoration-indigo-300 font-bold">"{userInfo.goal}"</span>. Isso tem tudo a ver com a sua pontuação mais alta em <strong>{top1.shortTitle}</strong>, pois a correria do dia a dia acaba te impedindo de focar nessa meta com calma.
                     </div>
                   )}
 
-                  {/* Análise do Ciclo Emocional do Bloco Dominante */}
+                  {/* Card do Maior Bloqueio */}
                   <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                     <h4 className="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2 text-indigo-700">
-                      <Icon name="Lightbulb" className="w-5 h-5 text-amber-500" />
-                      Como Funciona o Ciclo Emocional de {top1.shortTitle}
+                      <Icon name="Hammer" className="w-5 h-5 text-amber-500" />
+                      O que está acontecendo em: {top1.shortTitle}
                     </h4>
                     
                     <p className="text-xs sm:text-sm text-slate-700">
-                      O foco em {top1.shortTitle.toLowerCase()} funciona inicialmente como um mecanismo inconsciente de proteção:
+                      No seu dia a dia, esse comportamento costuma funcionar assim:
                     </p>
                     <blockquote className="border-l-4 border-indigo-500 pl-3 py-1 italic text-slate-800 text-xs sm:text-sm bg-indigo-50/50 rounded-r-lg">
                       "{top1.psychologicalCore}"
                     </blockquote>
 
-                    <p className="text-xs sm:text-sm text-slate-700 pt-1">
-                      <strong>O problema central:</strong> Quanto maior a necessidade de manter essa proteção, maior torna-se a sobrecarga emocional. Quando nenhuma decisão parece suficientemente segura, a pessoa passa a adiar, evitar ou questionar excessivamente suas próprias escolhas.
-                    </p>
-
-                    <div className="p-3 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono font-medium leading-relaxed">
-                      🔄 <strong>O Ciclo Vicioso Identificado:</strong><br/>
-                      {top1.blockIndex === 2 && "Medo de perder → Necessidade de controle → Sobrecarga → Insegurança → Dificuldade para agir → Sensação de incapacidade → Mais necessidade de controle."}
-                      {top1.blockIndex === 0 && "Medo do futuro → Falta de planejamento → Imprevisto/Caos → Correria extrema → Exaustão → Adiar decisões estratégicas → Mais caos."}
-                      {top1.blockIndex === 1 && "Desejo de expansão → Proximidade de bons resultados → Pico de ansiedade → Autoboicote silencioso → Estagnação → Alívio temporário → Culpa."}
-                      {top1.blockIndex === 3 && "Oportunidade de ganho → Culpa inconsciente de trair origens → Recuo de ganhos → Retorno ao padrão antigo → Alívio de pertencer → Desejo reprimido."}
-                      {top1.blockIndex === 4 && "Início de projeto promissor → Proximidade de consolidação → Criação de distrações → Fracasso/Regressão → Confirmação 'não consigo' → Reinício."}
-                      {top1.blockIndex === 5 && "Necessidade de decidir → Medo de errar/decepcionar → Busca por validação externa → Paralisia/Dúvida → Perda da oportunidade → Sensação de incapacidade."}
+                    <div className="p-3.5 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono font-medium leading-relaxed">
+                      🔄 <strong>O ciclo que você precisa quebrar:</strong><br/>
+                      {top1.blockIndex === 2 && "Medo de algo dar errado → Fazer tudo sozinho(a) → Exaustão total → Fica sem energia para pensar → Acha que só você resolve as coisas → Mais sobrecarga."}
+                      {top1.blockIndex === 0 && "Ansiedade com o futuro → Falta de planejamento diário → Imprevisto financeiro → Correria para resolver urgente → Cansaço → Adia pagamentos → Mais imprevistos."}
+                      {top1.blockIndex === 1 && "Desejo de melhorar de vida → O dinheiro melhora → Receio ou culpa velada → Compras por impulso ou desorganização → O dinheiro acaba → Voltar ao aperto."}
+                      {top1.blockIndex === 3 && "Oportunidade de ganho real → Medo de parecer 'diferente' dos seus conhecidos → Decisões que gastam o lucro → Volta ao padrão antigo → Alívio."}
+                      {top1.blockIndex === 4 && "Projeto com bom potencial → Chega perto de dar certo → Perde o foco ou gasta fora de hora → O projeto para na metade → Sensação de frustração."}
+                      {top1.blockIndex === 5 && "Necessidade de decidir → Receio de errar ou ser criticado(a) → Pede conselho a todo mundo → Fica na dúvida e trava → Perde a oportunidade."}
                     </div>
-                  </div>
-
-                  {/* Comparativo dos blocos secundários */}
-                  <div className="space-y-2 text-xs sm:text-sm text-slate-700">
-                    <p>
-                      • <strong>{top2.shortTitle} ({top2.score}/50):</strong> Nesse resultado, o crescimento financeiro pode estar emocionalmente associado a riscos, responsabilidades elevadas ou possibilidade de perdas. Assim, desejar prosperar e, ao mesmo tempo, ter medo das consequências de crescer podem coexistir no seu dia a dia.
-                    </p>
-                    <p>
-                      • <strong>{top3.shortTitle} ({top3.score}/50):</strong> Mostra uma influência relevante. Isso indica que parte das suas decisões ainda pode ser tomada buscando principalmente segurança imediata e alívio do estresse diário.
-                    </p>
-                    <p>
-                      • <strong>{lowestBlock.shortTitle} ({lowestBlock.score}/50):</strong> Foi um dos seus menores índices. Isso indica que a dinâmica deste bloco não é a causa raiz primária do seu bloqueio financeiro atual.
-                    </p>
                   </div>
 
                 </div>
 
               </div>
 
-              {}
-              {/* SEÇÃO DE SOLUÇÕES & TRÊS PILARES DO AMADURECIMENTO EMOCIONAL */}
+              {/* Plano de Ação em 5 Passos Simples */}
               <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 text-white rounded-2xl p-6 sm:p-9 shadow-xl space-y-6">
                 
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div className="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-bold shadow-md shadow-amber-400/20">
-                    <Icon name="Sparkles" className="w-6 h-6" />
+                    <Icon name="Target" className="w-6 h-6" />
                   </div>
                   <div>
                     <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                      Caminho Prático de Transformação
+                      Seu Guia Prático de Mudança
                     </span>
                     <h3 className="text-xl sm:text-2xl font-black text-white">
-                      Solução & Os Três Pilares do Amadurecimento
+                      5 Passos Simples para Destravar Suas Finanças
                     </h3>
                   </div>
                 </div>
 
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  Dentro da teoria do <strong>Amadurecimento Emocional Financeiro</strong>, o objetivo não é eliminar o medo, mas aprender a não permitir que o medo seja o responsável pelas suas decisões diárias.
+                  Confira as atitudes recomendadas para você colocar em prática a partir de hoje:
                 </p>
 
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-xs sm:text-sm text-indigo-200 italic leading-relaxed">
-                  "Uma pessoa emocionalmente madura não é aquela que nunca sente medo de perder. É aquela que consegue reconhecer o medo, compreender sua origem e ainda assim tomar decisões conscientes e direcionadas."
-                </div>
-
-                {/* Cards dos 3 Pilares */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                <div className="space-y-4">
                   
+                  {/* Passo 1 */}
                   <div className="bg-white/10 rounded-xl p-5 border border-white/10 backdrop-blur-sm space-y-2">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 font-black text-xs flex items-center justify-center">
-                      1
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black text-xs">PASSO 1</span>
+                      <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">Tire a Carga de Culpa das Suas Costas</h4>
                     </div>
-                    <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">
-                      ACEITAÇÃO
-                    </h4>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Aceitar que errar e perder fazem parte do processo de crescimento e que nenhuma decisão financeira oferece risco absolutamente zero.
+                    <p className="text-xs text-slate-200 leading-relaxed">
+                      Lembre-se sempre: <em>"Eu posso estar em um momento financeiro difícil, mas eu não sou um fracasso. Eu sou capaz de arrumar minhas contas com calma."</em> Olhe para os seus números sem desespero.
                     </p>
                   </div>
 
+                  {/* Passo 2 */}
                   <div className="bg-white/10 rounded-xl p-5 border border-white/10 backdrop-blur-sm space-y-2">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 font-black text-xs flex items-center justify-center">
-                      2
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black text-xs">PASSO 2</span>
+                      <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">ColoqueTrês Hábitos de Paz no Dia a Dia</h4>
                     </div>
-                    <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">
-                      ENTENDIMENTO
-                    </h4>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Compreender a real origem da trava. É medo de perder dinheiro? De fracassar? De decepcionar alguém? Ou de perder a sensação de segurança?
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs text-slate-300">
+                      <div className="p-3 bg-white/5 rounded-lg border border-white/5">
+                        <strong className="text-amber-300 block mb-1">1. Aceite a incerteza</strong>
+                        Não espere ter 100% de garantia para agir. Erros pequenos acontecem e fazem parte do aprendizado.
+                      </div>
+                      <div className="p-3 bg-white/5 rounded-lg border border-white/5">
+                        <strong className="text-amber-300 block mb-1">2. Pense antes de gastar</strong>
+                        Antes de comprar algo, pergunte-se: "Estou comprando por necessidade real ou para aliviar meu estresse?".
+                      </div>
+                      <div className="p-3 bg-white/5 rounded-lg border border-white/5">
+                        <strong className="text-amber-300 block mb-1">3. Valorize seu esforço</strong>
+                        Reconheça as coisas boas que você já conseguiu fazer. Você tem mais capacidade do que imagina.
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Passo 3 */}
+                  <div className="bg-white/10 rounded-xl p-5 border border-white/10 backdrop-blur-sm space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black text-xs">PASSO 3</span>
+                      <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">Ação Direta para: {top1.shortTitle.toUpperCase()}</h4>
+                    </div>
+                    <div className="text-xs text-slate-200 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
+                      {top1.blockIndex === 2 && "• Exercício de Confiança: Escolha 2 tarefas simples na sua semana e passe para outra pessoa fazer. Não fique olhando ou corrigindo o tempo todo. Desligue do trabalho à noite."}
+                      {top1.blockIndex === 0 && "• Organização Matinal: Antes de abrir mensagens de celular de manhã, escreva em um papel as 3 únicas contas ou tarefas financeiras mais importantes do dia."}
+                      {top1.blockIndex === 1 && "• Reserva do Desfrute: Separe uma pequena quantia por mês exclusivamente para você tomar um café ou passear, sem ter que prestar contas e sem culpa."}
+                      {top1.blockIndex === 3 && "• Mudança de Visão: Coloque na cabeça que prosperar e ganhar melhor é a forma mais bonita de ajudar e orgulhar sua família e quem você ama."}
+                      {top1.blockIndex === 4 && "• Foco na Conclusão: Comprometa-se a terminar 2 coisas importantes que você deixou pela metade antes de inventar ou começar qualquer novo projeto."}
+                      {top1.blockIndex === 5 && "• Autonomia Simples: Tome uma decisão financeira que você vinha adiando sem consultar parentes ou amigos. Confie no seu próprio discernimento."}
+                    </div>
+                  </div>
+
+                  {/* Passo 4 */}
+                  <div className="bg-white/10 rounded-xl p-5 border border-white/10 backdrop-blur-sm space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black text-xs">PASSO 4</span>
+                      <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">Busque Paz e Equilíbrio Familiar</h4>
+                    </div>
+                    <p className="text-xs text-slate-200 leading-relaxed">
+                      Lembre-se de que o dinheiro bem gerido traz <strong>paz, gentileza, paciência e autocontrole</strong> para dentro da sua casa. Evite discutir sobre finanças nos momentos de cansaço.
                     </p>
                   </div>
 
+                  {/* Passo 5 */}
                   <div className="bg-white/10 rounded-xl p-5 border border-white/10 backdrop-blur-sm space-y-2">
-                    <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 font-black text-xs flex items-center justify-center">
-                      3
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black text-xs">PASSO 5</span>
+                      <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">Revisão Rápida no Final da Semana</h4>
                     </div>
-                    <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">
-                      ADMIRAÇÃO
-                    </h4>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Reconhecer sua própria capacidade de aprender, recalcular rotas e recomeçar. Não medir seu valor pessoal pelo resultado de uma única escolha.
+                    <p className="text-xs text-slate-200 leading-relaxed">
+                      Todo domingo, pergunte a si mesmo(a) em 1 minuto: <em>"Minhas decisões com dinheiro nesta semana foram tomadas com calma e planejamento, ou foram tomadas no impulso da ansiedade?"</em> Ajuste os detalhes para a próxima semana.
                     </p>
                   </div>
 
                 </div>
 
-                {/* Virada de Chave de Atitude */}
                 <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-500/20 to-indigo-500/20 border border-amber-400/30 text-xs sm:text-sm text-slate-100 space-y-2">
                   <h5 className="font-bold text-amber-300 flex items-center gap-1.5 uppercase tracking-wider text-xs">
                     <Icon name="HeartHandshake" className="w-4 h-4" />
-                    Mudança Fundamental de Postura
+                    Frase para Lembrar no Dia a Dia
                   </h5>
-                  <p className="leading-relaxed">
-                    O desenvolvimento principal para você está na construção de uma relação madura com o risco: <strong>segurança não significa controlar tudo.</strong>
-                  </p>
                   <blockquote className="font-serif italic text-white text-sm sm:text-base border-l-2 border-amber-400 pl-3 my-2">
-                    "Eu não tenho como garantir que não vou perder. Mas posso me preparar, analisar, decidir e confiar na minha capacidade de lidar com o que acontecer."
+                    "Eu não preciso resolver tudo de uma vez. Eu preciso apenas dar um passo correto de cada vez, com calma e constância."
                   </blockquote>
-                  <p className="text-slate-300 text-xs pt-1">
-                    Esse é o caminho definitivo para transformar o medo de errar em capacidade de decidir, e o excesso de controle em consciência e autonomia.
-                  </p>
-                </div>
-
-                <div className="text-[11px] text-slate-400 italic pt-2 border-t border-white/10">
-                  * Este mapeamento é uma ferramenta de reflexão e identificação de padrões emocionais e comportamentais, não constituindo um diagnóstico clínico ou médico.
                 </div>
 
               </div>
 
-              {/* Gráfico de Barras dos 6 Blocos e Perfil Dominante */}
+              {/* Gráfico comparativo e perfil */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                {/* Card Perfil Dominante */}
+                {/* Perfil Principal */}
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-2">
                       <Icon name="Target" className="w-4 h-4" />
-                      Perfil Dominante Identificado
+                      Seu Perfil de Comportamento Predominante
                     </div>
                     <h3 className="text-xl font-black text-slate-900 mb-2">
                       {top1.profileName}
@@ -1092,8 +1176,8 @@
                     </p>
                     <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 text-xs space-y-1.5">
                       <div className="flex justify-between text-slate-600">
-                        <span>Pontuação no Bloco:</span>
-                        <strong className="text-slate-900 text-sm">{top1.score} / 50 pts</strong>
+                        <span>Sua Pontuação nesta Área:</span>
+                        <strong className="text-slate-900 text-sm">{top1.score} de 50 pts</strong>
                       </div>
                       <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mt-2">
                         <div className="bg-indigo-600 h-full rounded-full" style={{ width: `${(top1.score / 50) * 100}%` }}></div>
@@ -1102,7 +1186,7 @@
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-600">
-                    💡 <strong>Foco Imediato:</strong> {currentTier.action}
+                    💡 <strong>O que fazer primeiro:</strong> {currentTier.action}
                   </div>
                 </div>
 
@@ -1111,7 +1195,7 @@
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
                       <Icon name="BarChart3" className="w-4 h-4 text-indigo-600" />
-                      Visão Geral dos 6 Blocos
+                      Comparativo das 6 Áreas
                     </h3>
                     <span className="text-xs text-slate-400">0 - 50 Pts</span>
                   </div>
@@ -1137,14 +1221,14 @@
 
               </div>
 
-              {/* Botões de Ação no Final */}
+              {/* Botões do Rodapé do Resultado */}
               <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
                 <button
                   onClick={handleCopyReport}
                   className="w-full sm:w-auto px-6 py-3.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center gap-2 transition-all shadow-md"
                 >
                   <Icon name="Copy" className="w-4 h-4" />
-                  {copyStatus ? "Relatório Completo Copiado!" : "Copiar Relatório Completo em Texto"}
+                  {copyStatus ? "Relatório Copiado com Sucesso!" : "Copiar Relatório Completo para WhatsApp / Bloco de Notas"}
                 </button>
 
                 <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -1171,8 +1255,7 @@
             </div>
           )}
 
-          {}
-          {/* Menu de Navegação no Rodapé (Mobile App Style) */}
+          {/* Menu Fixo Mobile (App-Style) */}
           <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-xl px-2 py-2">
             <div className="max-w-md mx-auto grid grid-cols-4 items-center justify-items-center">
               
@@ -1228,7 +1311,7 @@
             </div>
           </nav>
 
-          {/* Modal de Confirmação para Refazer Teste */}
+          {/* Modal de Limpeza */}
           {showResetModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
               <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
@@ -1236,9 +1319,9 @@
                   <Icon name="RefreshCw" className="w-6 h-6" />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-lg font-bold text-slate-900">Refazer Teste em Branco?</h3>
+                  <h3 className="text-lg font-bold text-slate-900">Deseja Zerar Suas Respostas?</h3>
                   <p className="text-slate-600 text-sm mt-1">
-                    Esta ação irá <strong>limpar todas as suas 60 respostas</strong> e seus dados cadastrais, reiniciando o diagnóstico do zero.
+                    Esta ação irá <strong>limpar todas as suas 60 respostas</strong> e seus dados cadastrais para você reiniciar o teste do zero.
                   </p>
                 </div>
                 <div className="flex items-center gap-3 pt-2">
@@ -1269,9 +1352,9 @@
                   <Icon name="AlertCircle" className="w-6 h-6" />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-lg font-bold text-slate-900">Visualizar Diagnóstico Parcial?</h3>
+                  <h3 className="text-lg font-bold text-slate-900">Ver Resultado Parcial?</h3>
                   <p className="text-slate-600 text-sm mt-1">
-                    Você preencheu <strong>{answeredCount} de 60 questões</strong>. Para um mapeamento 100% preciso, recomendamos responder todos os blocos.
+                    Você respondeu <strong>{answeredCount} de 60 questões</strong>. Para um resultado 100% preciso, recomendamos responder todas as perguntas.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 pt-2">
@@ -1284,7 +1367,7 @@
                     }}
                     className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-colors shadow-md shadow-indigo-100"
                   >
-                    Ver Diagnóstico Parcial
+                    Ver Resultado Parcial Mesmo Assim
                   </button>
                   <button
                     type="button"
@@ -1300,7 +1383,7 @@
 
           {/* Footer discreto */}
           <footer className="mt-10 text-center text-xs text-slate-400 py-4">
-            Mapeamento Emocional Financeiro • Sistema de Diagnóstico & Amadurecimento Emocional
+            Mapeamento Emocional Financeiro — Guia Prático de Organização e Paz com o Dinheiro
           </footer>
 
         </div>
